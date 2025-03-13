@@ -21,8 +21,8 @@ model Participant {
   email   String @unique  @db.VarChar(255)
   results Result[]
   
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("participants")
 }
@@ -33,8 +33,8 @@ model Admin {
   email    String @unique @db.VarChar(255)
   password String         @db.VarChar(15)
   
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("admin")
 }
@@ -45,79 +45,79 @@ model Level {
   description String?    @db.Text
   questions   Question[]
   
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("level")
 }
 
 model Question {
   id        String   @id @default(uuid()) @db.Uuid
-  levelId   Int      @map("level_id")
-  level     Level    @relation(fields: [levelId], references: [id])
+  level_id   Int     
+  level     Level    @relation(fields: [level_id], references: [id])
   body      String?  @db.Text
-  imageUrl  String?  @map("image_url") @db.VarChar(255)
+  image_url  String? @db.VarChar(255)
   answers   Answer[]
   
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("question")
 }
 
 model Answer {
   id         Int      @id @default(autoincrement())
-  questionId String   @map("question_id") @db.Uuid
-  question   Question @relation(fields: [questionId], references: [id])
+  question_id String  @db.Uuid
+  question   Question @relation(fields: [question_id], references: [id])
   body       String?  @db.Text
-  imageUrl   String?  @map("image_url") @db.VarChar(255)
+  image_url  String?  @db.VarChar(255)
   isCorrect  Boolean
   
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("answer")
 }
 
 model Result {
-  id            String           @id @default(uuid()) @db.Uuid
-  participantId Int              @map("participant_id")
-  participant   Participant      @relation(fields: [participantId], references: [id])
-  levelResult   Int              @map("level_result")
-  description   String?          @db.Text
+  id              String           @id @default(uuid()) @db.Uuid
+  participant_id  Int             
+  participant     Participant      @relation(fields: [participant_id], references: [id])
+  level_result    Int             
+  description     String?          @db.Text
   resultQuestions ResultQuestion[]
   
-  createdAt     DateTime         @default(now()) @map("created_at")
-  updatedAt     DateTime         @updatedAt @map("updated_at")
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
 
   @@map("result")
 }
 
 model ResultQuestion {
-  id         String         @id @default(uuid()) @db.Uuid
-  resultId   String         @map("result_id") @db.Uuid
-  result     Result         @relation(fields: [resultId], references: [id])
-  body       String?        @db.Text
-  imageUrl   String?        @map("image_url") @db.VarChar(255)
-  resultAnswers ResultAnswer[]
+  id              String          @id @default(uuid()) @db.Uuid
+  result_id       String          @db.Uuid
+  result          Result          @relation(fields: [result_id], references: [id])
+  body            String?         @db.Text
+  image_url       String?         @db.VarChar(255)
+  result_answers  ResultAnswer[]
   
-  createdAt  DateTime       @default(now()) @map("created_at")
-  updatedAt  DateTime       @updatedAt @map("updated_at")
+  created_at      DateTime        @default(now())
+  updated_at      DateTime        @updatedAt
 
   @@map("result_question")
 }
 
 model ResultAnswer {
-  id                String        @id @default(uuid()) @db.Uuid
-  resultQuestionId  String        @map("result_question_id") @db.Uuid
-  resultQuestion    ResultQuestion @relation(fields: [resultQuestionId], references: [id])
-  body              String?       @db.Text
-  imageUrl          String?       @map("image_url") @db.VarChar(255)
-  answered          Boolean
-  isCorrect         Boolean
+  id                  String          @id @default(uuid()) @db.Uuid
+  result_question_id  String          @db.Uuid
+  result_question     ResultQuestion  @relation(fields: [result_question_id], references: [id])
+  body                String?         @db.Text
+  imageUrl            String?         @map("image_url") @db.VarChar(255)
+  answered            Boolean
+  isCorrect           Boolean
   
-  createdAt         DateTime      @default(now()) @map("created_at")
-  updatedAt         DateTime      @updatedAt @map("updated_at")
+  created_at          DateTime        @default(now())
+  updated_at          DateTime        @updatedAt
 
   @@map("result_answer")
 }
