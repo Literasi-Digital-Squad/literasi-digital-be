@@ -71,7 +71,7 @@ model Answer {
   question    Question @relation(fields: [question_id], references: [id])
   body        String?  @db.Text
   image_url   String?  @db.VarChar(255)
-  isCorrect   Boolean
+  is_correct   Boolean
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -85,7 +85,7 @@ model Result {
   participant     Participant      @relation(fields: [participant_id], references: [id])
   level_result    Int
   description     String?          @db.Text
-  resultQuestions ResultQuestion[]
+  result_questions ResultQuestion[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -114,7 +114,7 @@ model ResultAnswer {
   body               String?        @db.Text
   imageUrl           String?        @map("image_url") @db.VarChar(255)
   answered           Boolean
-  isCorrect          Boolean
+  is_correct          Boolean
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
