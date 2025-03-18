@@ -18,6 +18,7 @@ Response Body (Success) :
 
 ```
 {
+	"status": "success"
 	"data": {
         	"id": 1,
         	"name": "Tantowi Shah Hanif",
@@ -32,7 +33,8 @@ Response Body (Failed) :
 
 ```
 {
-	"error": "Username or password is wrong"
+	"status": "error"
+	"error": "username or password is wrong"
 }
 ```
 
@@ -53,6 +55,7 @@ Response Body (Success) :
 
 ```
 {
+	"status": "success"
 	"data": {
        		"id": 1,
        		"name": "Admin 1",
@@ -68,7 +71,8 @@ Response Body (Failed) :
 
 ```
 {
-	"error": "Username must not blank"
+	"status": "error"
+	"error": "username must not blank"
 }
 ```
 
@@ -84,6 +88,7 @@ Response Body (Success) :
 
 ```
 {
+	"status": "success"
 	"data": {
         	"id": 1,
        		"name": "Admin 1",
@@ -98,7 +103,8 @@ Response Body (Failed) :
 
 ```
 {
-	"errors": "User is not found, ..."
+	"status": "error"
+	"error": "user is not found, ..."
 }
 ```
 
@@ -124,6 +130,7 @@ Response Body (Success) :
 
 ```
 {
+	"status": "success"
 	"data": {
         	"id": 1,
        		"name": "Admin 1",
@@ -138,6 +145,7 @@ Response Body (Failed) :
 
 ```
 {
-	"errors": "Unauthorized"
+	"status": "error"
+	"error": "unauthorized"
 }
 ```
