@@ -2,10 +2,10 @@
 
 ## Auth & User Endpoint
 
-POST /v1/users/login/
-POST /v1/users/register/
-GET /v1/users/
-PUT /v1/users/
+POST /v1/admin/login/
+POST /v1/admin/register/
+GET /v1/admin/
+PUT /v1/admin/
 
 ## Level Endpoint
 

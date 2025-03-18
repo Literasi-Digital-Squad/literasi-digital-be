@@ -48,7 +48,7 @@ model Level {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("level")
+  @@map("levels")
 }
 
 model Question {
@@ -62,7 +62,7 @@ model Question {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("question")
+  @@map("questions")
 }
 
 model Answer {
@@ -71,26 +71,26 @@ model Answer {
   question    Question @relation(fields: [question_id], references: [id])
   body        String?  @db.Text
   image_url   String?  @db.VarChar(255)
-  is_correct   Boolean
+  is_correct  Boolean
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("answer")
+  @@map("answers")
 }
 
 model Result {
-  id              String           @id @default(uuid()) @db.Uuid
-  participant_id  Int
-  participant     Participant      @relation(fields: [participant_id], references: [id])
-  level_result    Int
-  description     String?          @db.Text
+  id               String           @id @default(uuid()) @db.Uuid
+  participant_id   Int
+  participant      Participant      @relation(fields: [participant_id], references: [id])
+  level_result     Int
+  description      String?          @db.Text
   result_questions ResultQuestion[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("result")
+  @@map("results")
 }
 
 model ResultQuestion {
@@ -104,7 +104,7 @@ model ResultQuestion {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("result_question")
+  @@map("result_questions")
 }
 
 model ResultAnswer {
@@ -112,12 +112,12 @@ model ResultAnswer {
   result_question_id String         @db.Uuid
   result_question    ResultQuestion @relation(fields: [result_question_id], references: [id])
   body               String?        @db.Text
-  imageUrl           String?        @map("image_url") @db.VarChar(255)
+  image_url          String?        @db.VarChar(255)
   answered           Boolean
-  is_correct          Boolean
+  is_correct         Boolean
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("result_answer")
+  @@map("result_answers")
 }
