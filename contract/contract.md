@@ -22,7 +22,7 @@ PUT /v1//admin/levels/:id
 
 POST /v1/admin/questions
 
-GET /v1/admin/questions?level=
+GET /v1/admin/questions?level=&limit=&page=
 
 GET /v1/admin/questions/:question_id
 
@@ -34,17 +34,13 @@ DELETE /v1/admin/questions/:id
 
 POST /v1/admin/questions/:question_id/answers (bulk insert only using array)
 
-GET /v1/admin/questions/:question_id/answers
-
 GET /v1/admin/questions/:question_id/answers/:answer_id
 
-PUT /v1/admin/questions/:question_id/answers/:answer_id
-
-DELETE /v1/admin/questions/:question_id/answers/:answer_id'
+PUT /v1/admin/questions/:question_id/answers (bulk update only)
 
 ## Participant API
 
-GET /v1/admin/participants?limit=&offset=
+GET /v1/admin/participants?limit=&page=
 
 PUT /v1/admin/participants/:id
 

@@ -10,7 +10,7 @@ Request Body :
 {
 	"name": "Admin 1"
 	"password": "12354",
-	"email": "admin1@gmail.com",
+	"email": "admin1@gmail.com"
 }
 ```
 
@@ -23,7 +23,7 @@ Response Body (Success) :
         	"id": 1,
         	"name": "Tantowi Shah Hanif",
         	"email": "tantows001@gmail.com",
-		"created_at": "2025-18-03 11:01:10"
+		"created_at": "2025-18-03 11:01:10",
 		"updated_at": "2025-18-03 11:01:10"
 	}
 }
@@ -47,7 +47,7 @@ Request Body :
 ```
 {
 	"email": "admin1@gmail.com",
-	"password": "12354",
+	"password": "12354"
 }
 ```
 
@@ -55,12 +55,12 @@ Response Body (Success) :
 
 ```
 {
-	"status": "success"
+	"status": "success",
 	"data": {
        		"id": 1,
        		"name": "Admin 1",
        		"email": "admin1@gmail.com",
-		"created_at": "2025-18-03 11:01:10"
+		"created_at": "2025-18-03 11:01:10",
 		"updated_at": "2025-18-03 11:01:10"
     	},
 	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6Isadlsankldnaskldjajoiijwqoidjioqwjdoqw"
@@ -71,7 +71,7 @@ Response Body (Failed) :
 
 ```
 {
-	"status": "error"
+	"status": "error",
 	"error": "username must not blank"
 }
 ```
@@ -88,12 +88,12 @@ Response Body (Success) :
 
 ```
 {
-	"status": "success"
+	"status": "success",
 	"data": {
         	"id": 1,
        		"name": "Admin 1",
        		"email": "admin1@gmail.com",
-		"created_at": "2025-18-03 11:01:10"
+		"created_at": "2025-18-03 11:01:10",
 		"updated_at": "2025-18-03 11:01:10"
 	}
 }
@@ -103,7 +103,7 @@ Response Body (Failed) :
 
 ```
 {
-	"status": "error"
+	"status": "error",
 	"error": "user is not found, ..."
 }
 ```
@@ -120,7 +120,7 @@ Request Body :
 
 ```
 {
-	"name": "Admin 1"
+	"name": "Admin 1",
 	"password": "12354",
 	"email": "admin1@gmail.com"
 }
@@ -130,12 +130,12 @@ Response Body (Success) :
 
 ```
 {
-	"status": "success"
+	"status": "success",
 	"data": {
         	"id": 1,
        		"name": "Admin 1",
        		"email": "admin1@gmail.com",
-		"created_at": "2025-18-03 11:01:10"
+		"created_at": "2025-18-03 11:01:10",
 		"updated_at": "2025-18-03 11:01:10"
 	}
 }
@@ -145,7 +145,7 @@ Response Body (Failed) :
 
 ```
 {
-	"status": "error"
+	"status": "error",
 	"error": "unauthorized"
 }
 ```

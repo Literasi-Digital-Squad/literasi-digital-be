@@ -17,15 +17,15 @@ Response Body (Success) :
 		{
 			"id": 1,
 			"level": 1,
-			"description": "lorem ipsum...."
-			"created_at": "2025-18-03 11:01:10"
+			"description": "lorem ipsum....",
+			"created_at": "2025-18-03 11:01:10",
 			"updated_at": "2025-18-03 11:01:10"
 		},
 		{
 			"id": 2,
 			"level": 2,
-			"description": "lorem ipsum...."
-			"created_at": "2025-18-03 11:01:10"
+			"description": "lorem ipsum....",
+			"created_at": "2025-18-03 11:01:10",
 			"updated_at": "2025-18-03 11:01:10"
 		},
 	]
@@ -36,7 +36,7 @@ Response Body (Failed) :
 
 ```
 {
-	"status": "error"
+	"status": "error",
 	"error": "unauthenticated"
 }
 ```
@@ -57,8 +57,8 @@ Response Body (Success) :
 	"data": {
 		"id": 1,
 		"level": 1,
-		"description": "lorem ipsum...."
-		"created_at": "2025-18-03 11:01:10"
+		"description": "lorem ipsum....",
+		"created_at": "2025-18-03 11:01:10",
 		"updated_at": "2025-18-03 11:01:10"
 	}
 }
@@ -68,7 +68,7 @@ Response Body (Failed) :
 
 ```
 {
-	"status": "error"
+	"status": "error",
 	"error": "level not found"
 }
 ```
@@ -97,8 +97,8 @@ Response Body (Success) :
 	"data": {
 		"id": 1,
 		"level": 1,
-		"description": "lorem ipsum edit..."
-		"created_at": "2025-18-03 11:01:10"
+		"description": "lorem ipsum edit...",
+		"created_at": "2025-18-03 11:01:10",
 		"updated_at": "2025-18-03 11:19:21"
 	}
 }
@@ -108,7 +108,7 @@ Response Body (Failed) :
 
 ```
 {
-	"status": "error"
+	"status": "error",
 	"error": "unauthorized"
 }
 ```
