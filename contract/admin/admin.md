@@ -38,7 +38,7 @@ Response Body (Failed) :
 }
 ```
 
-## Login User
+## Login Admin
 
 Endpoint : POST /api/v1/admin/login
 
@@ -76,7 +76,7 @@ Response Body (Failed) :
 }
 ```
 
-## Get User
+## Get Admin
 
 Endpoint : GET /api/v1/admin
 
@@ -108,7 +108,7 @@ Response Body (Failed) :
 }
 ```
 
-## Update User
+## Update Admin
 
 Endpoint : PATCH /api/v1/admin
 
