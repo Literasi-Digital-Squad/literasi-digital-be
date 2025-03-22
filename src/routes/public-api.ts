@@ -1,12 +1,12 @@
 import express from 'express'
-import { UserController } from '../controller/user-controller'
+import { AdminController } from '../controller/admin-controller'
 import { PostController } from '../controller/post-controller'
 
 export const publicRouter = express.Router()
 
 // Auth API
-publicRouter.post('/api/users/register', UserController.register)
-publicRouter.post('/api/users/login', UserController.login)
+publicRouter.post('/api/v1/admin/register', AdminController.register)
+publicRouter.post('/api/v1/admin/login', AdminController.login)
 
 // Post API
 publicRouter.get('/api/posts', PostController.getAll)
