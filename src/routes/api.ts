@@ -1,16 +1,15 @@
 import express from 'express'
-import { UserController } from '../controller/user-controller'
-import { app } from '../app/app'
 import { authMiddleware } from '../middleware/auth-middleware'
 import { PostController } from '../controller/post-controller'
+import { AdminController } from '../controller/admin-controller'
 
 export const apiRouter = express.Router()
 
 apiRouter.use(authMiddleware)
 
 // Auth API
-apiRouter.get('/api/users', UserController.get)
-apiRouter.patch('/api/users', UserController.update)
+apiRouter.get('/api/v1/admin', AdminController.get)
+apiRouter.put('/api/v1/admin/:id', AdminController.update)
 
 // Post API
 apiRouter.post('/api/posts', PostController.create)
