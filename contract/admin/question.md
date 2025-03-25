@@ -79,7 +79,13 @@ Response Body (Success) :
 			"created_at": "2025-18-03 11:01:10",
 			"updated_at": "2025-18-03 11:01:10"
 		}
-	]
+	],
+	"pagination": {
+		"total_items": 5,
+		"total_pages": 3,
+		"current_page": 1,
+		"items_per_page": 2
+	}
 }
 ```
 
