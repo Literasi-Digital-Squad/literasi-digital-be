@@ -13,21 +13,17 @@ import { AdminValidation } from "../validation/admin-validation";
 import { Validation } from "../validation/validation";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { Admin } from "@prisma/client";
 
 export class AdminService {
     static async checkAdminExist(id: number) {
-        const admin = await prismaClient.admin.findUnique({
-            where: {
-                id: id
-            }
-        });
-
-        if (!admin) {
-            throw new ResponseErorr(404, "Admin not found");
-        }
-
-        return admin;
+        return await prismaClient.admin.findUnique(
+            {
+                where:
+                {
+                    id
+                }
+            }) 
+            ?? Promise.reject(new ResponseErorr(404, "Admin not found"));
     }
 
     static async register(req: AdminRegisterRequest): Promise<AdminResponse> {
@@ -86,49 +82,26 @@ export class AdminService {
         return toAdminLoginResponse(admin, token);
     }
 
-    static async get(admin: Admin): Promise<AdminResponse> {
-        return toAdminResponse(admin);
+    static async get(id: number): Promise<AdminResponse> {
+        return toAdminResponse(await this.checkAdminExist(id));
     }
 
-    static async update(admin: Admin, req: AdminUpdateRequest): Promise<AdminResponse> {
+    static async update(id: number, req: AdminUpdateRequest): Promise<AdminResponse> {
+        await this.checkAdminExist(id);
+
         const updateRequest = Validation.validate(AdminValidation.UPDATE, req);
 
-        if (updateRequest.name) {
-            admin.name = updateRequest.name;
-        }
-
         if (updateRequest.password) {
-            admin.password = await bcrypt.hash(updateRequest.password, 10);
-        }
-        
-        if (updateRequest.email) {
-            const duplicateEmail = await prismaClient.admin.findMany({
-                where: {
-                    email: updateRequest.email,
-                    id: {
-                        not: admin.id
-                    }
-                }
-            });
-
-            if (duplicateEmail.length > 0) {
-                throw new ResponseErorr(400, "Email has already been taken");
-            }
-            
-            admin.email = updateRequest.email;
+            updateRequest.password = await bcrypt.hash(updateRequest.password, 10);
         }
 
-        const adminUpdate = await prismaClient.admin.update({
+        const updatedAdmin = await prismaClient.admin.update({
             where: {
-                id: admin.id
+                id: id
             },
-            data: {
-                name: admin.name,
-                password: admin.password,
-                email: admin.email
-            }
+            data: updateRequest
         });
 
-        return toAdminResponse(adminUpdate);
+        return toAdminResponse(updatedAdmin);
     }
 }

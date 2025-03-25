@@ -3,6 +3,7 @@ import { authMiddleware } from '../middleware/auth-middleware'
 import { AdminController } from '../controller/admin-controller'
 import { LevelController } from '../controller/level-controller'
 import { QuestionController } from '../controller/question-controller'
+import { ParticipantController } from '../controller/participant-controller'
 import multer from 'multer'
 
 export const apiRouter = express.Router()
@@ -11,9 +12,14 @@ const upload = multer()
 
 apiRouter.use(authMiddleware)
 
+// Participant API
+apiRouter.get('/admin/participants', ParticipantController.getAll)
+apiRouter.put('/admin/participants/:id', ParticipantController.update)
+apiRouter.delete('/admin/participants/:id', ParticipantController.delete)
+
 // Auth API
-apiRouter.get('/admin', AdminController.get)
-apiRouter.put('/admin/:id', AdminController.update)
+apiRouter.get('/admin/:id', AdminController.get);
+apiRouter.put('/admin/:id', AdminController.update);
 
 // Level API
 apiRouter.get('/admin/levels', LevelController.getAll)
