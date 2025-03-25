@@ -12,8 +12,8 @@ const upload = multer()
 apiRouter.use(authMiddleware)
 
 // Auth API
-apiRouter.get('/admin', AdminController.get)
-apiRouter.put('/admin/:id', AdminController.update)
+apiRouter.get('/admin/:id', AdminController.get);
+apiRouter.put('/admin/:id', AdminController.update);
 
 // Level API
 apiRouter.get('/admin/levels', LevelController.getAll)
