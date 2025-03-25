@@ -34,6 +34,11 @@ export const APIPrefix = {
 export const TokenRequired = "token is required"
 export const Unauthorized = "unauthorized"
 
+// AWS S3
+export const AWSRegion = "ap-southeast-3"
+export const FailedUploadFile = "failed to upload file"
+export const FailedDeleteFile = "failed to delete file"
+
 // API Message
 export const Status = {
     Success: "success",
@@ -43,3 +48,6 @@ export const InvalidID = "invalid id format"
 
 // Level constant
 export const LevelNotFound = "level not found"
+
+// Question constant
+export const QuestionNotFound = "question not found"

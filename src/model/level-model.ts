@@ -4,8 +4,8 @@ export type LevelResponse = {
     id: number
     level: number
     description?: string
-    created_at: Date
-    updated_at: Date
+    created_at: string
+    updated_at: string
 }
 
 export type UpdateLevelRequest = {
@@ -18,8 +18,8 @@ export function toLevelResponse(level: Level): LevelResponse {
         id: level.id,
         level: level.level,
         description: level.description!,
-        created_at: level.created_at,
-        updated_at: level.updated_at
+        created_at: level.created_at.toISOString(),
+        updated_at: level.updated_at.toISOString()
     }
 }
 
