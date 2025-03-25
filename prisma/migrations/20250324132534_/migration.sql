@@ -16,7 +16,7 @@ CREATE TABLE "admin" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(50) NOT NULL,
     "email" VARCHAR(255) NOT NULL,
-    "password" VARCHAR(15) NOT NULL,
+    "password" VARCHAR(100) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -24,18 +24,18 @@ CREATE TABLE "admin" (
 );
 
 -- CreateTable
-CREATE TABLE "level" (
+CREATE TABLE "levels" (
     "id" SERIAL NOT NULL,
     "level" INTEGER NOT NULL,
     "description" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "level_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "levels_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "question" (
+CREATE TABLE "questions" (
     "id" UUID NOT NULL,
     "level_id" INTEGER NOT NULL,
     "body" TEXT,
@@ -43,24 +43,24 @@ CREATE TABLE "question" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "question_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "questions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "answer" (
+CREATE TABLE "answers" (
     "id" SERIAL NOT NULL,
     "question_id" UUID NOT NULL,
     "body" TEXT,
     "image_url" VARCHAR(255),
-    "isCorrect" BOOLEAN NOT NULL,
+    "is_correct" BOOLEAN NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "answer_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "answers_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "result" (
+CREATE TABLE "results" (
     "id" UUID NOT NULL,
     "participant_id" INTEGER NOT NULL,
     "level_result" INTEGER NOT NULL,
@@ -68,11 +68,11 @@ CREATE TABLE "result" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "result_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "results_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "result_question" (
+CREATE TABLE "result_questions" (
     "id" UUID NOT NULL,
     "result_id" UUID NOT NULL,
     "body" TEXT,
@@ -80,34 +80,40 @@ CREATE TABLE "result_question" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "result_question_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "result_questions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "result_answer" (
+CREATE TABLE "result_answers" (
     "id" UUID NOT NULL,
     "result_question_id" UUID NOT NULL,
     "body" TEXT,
     "image_url" VARCHAR(255),
     "answered" BOOLEAN NOT NULL,
-    "isCorrect" BOOLEAN NOT NULL,
+    "is_correct" BOOLEAN NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "result_answer_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "result_answers_pkey" PRIMARY KEY ("id")
 );
 
--- AddForeignKey
-ALTER TABLE "question" ADD CONSTRAINT "question_level_id_fkey" FOREIGN KEY ("level_id") REFERENCES "level"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "participants_email_key" ON "participants"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "admin_email_key" ON "admin"("email");
 
 -- AddForeignKey
-ALTER TABLE "answer" ADD CONSTRAINT "answer_question_id_fkey" FOREIGN KEY ("question_id") REFERENCES "question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "questions" ADD CONSTRAINT "questions_level_id_fkey" FOREIGN KEY ("level_id") REFERENCES "levels"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "result" ADD CONSTRAINT "result_participant_id_fkey" FOREIGN KEY ("participant_id") REFERENCES "participants"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "answers" ADD CONSTRAINT "answers_question_id_fkey" FOREIGN KEY ("question_id") REFERENCES "questions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "result_question" ADD CONSTRAINT "result_question_result_id_fkey" FOREIGN KEY ("result_id") REFERENCES "result"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "results" ADD CONSTRAINT "results_participant_id_fkey" FOREIGN KEY ("participant_id") REFERENCES "participants"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "result_answer" ADD CONSTRAINT "result_answer_result_question_id_fkey" FOREIGN KEY ("result_question_id") REFERENCES "result_question"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "result_questions" ADD CONSTRAINT "result_questions_result_id_fkey" FOREIGN KEY ("result_id") REFERENCES "results"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "result_answers" ADD CONSTRAINT "result_answers_result_question_id_fkey" FOREIGN KEY ("result_question_id") REFERENCES "result_questions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
