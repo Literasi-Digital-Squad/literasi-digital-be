@@ -1,39 +1,40 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { logger } from "./logging";
+import { Database, Emit } from "../lib/constant";
 
 export const prismaClient = new PrismaClient({
     log: [
         {
-            emit: "event",
-            level: "query"
+            emit: Emit.EVENT,
+            level: Database.LevelQuery,
+        },
+        {
+            emit: Emit.EVENT,
+            level: Database.LevelError
+        },
+        {
+            emit: Emit.EVENT,
+            level: Database.LevelInfo
         },
         {
             emit: "event",
-            level: "error"
-        },
-        {
-            emit: "event",
-            level: "info"
-        },
-        {
-            emit: "event",
-            level: "warn"
+            level: Database.LevelWarn
         },
     ]
 })
 
-prismaClient.$on("query", (e) => {
+prismaClient.$on(Database.LevelQuery, (e) => {
     logger.info(e)
 })
 
-prismaClient.$on("error", (e) => {
+prismaClient.$on(Database.LevelError, (e) => {
     logger.error(e)
 })
 
-prismaClient.$on("info", (e) => {
+prismaClient.$on(Database.LevelInfo, (e) => {
     logger.info(e)
 })
 
-prismaClient.$on("warn", (e) => {
+prismaClient.$on(Database.LevelWarn, (e) => {
     logger.warn(e)
 })
