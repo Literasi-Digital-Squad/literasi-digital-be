@@ -28,12 +28,19 @@ export class ParticipantController {
             }
 
             const response = await ParticipantService.get(participantId);
-            res.status(200).json({
-                status: "success",
-                data: response
-            });
+            res.status(200).json(response);
         } catch (e) {
             next(e);
+        }
+    }
+
+    static async getResultsByParticipantId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const participantId = Number(req.params.id);
+            const results = await ParticipantService.getResultsByParticipantId(participantId);
+            res.status(200).json(results);
+        } catch (error) {
+            next(error);
         }
     }
 

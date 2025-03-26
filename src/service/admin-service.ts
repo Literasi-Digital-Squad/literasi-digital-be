@@ -5,14 +5,19 @@ import {
     AdminRegisterRequest,
     AdminUpdateRequest,
     AdminLoginResponse,
-    AdminResponse,
+    AdminCompleteResponse,
     toAdminLoginResponse,
-    toAdminResponse
+    toAdminCompleteResponse,
 } from "../model/admin-model";
 import { AdminValidation } from "../validation/admin-validation";
 import { Validation } from "../validation/validation";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import {
+    AdminNotFound,
+    EmailAlreadyTaken,
+    EmailOrPasswordInvalid
+} from "../lib/constant";
 
 export class AdminService {
     static async checkAdminExist(id: number) {
@@ -23,10 +28,10 @@ export class AdminService {
                     id
                 }
             }) 
-            ?? Promise.reject(new ResponseErorr(404, "Admin not found"));
+            ?? Promise.reject(new ResponseErorr(404, AdminNotFound));
     }
 
-    static async register(req: AdminRegisterRequest): Promise<AdminResponse> {
+    static async register(req: AdminRegisterRequest): Promise<AdminCompleteResponse> {
         const registerRequest = Validation.validate(AdminValidation.REGISTER, req);
 
         const duplicateEmail = await prismaClient.admin.findMany({
@@ -36,7 +41,7 @@ export class AdminService {
         });
 
         if (duplicateEmail.length > 0) {
-            throw new ResponseErorr(400, "Email has already been taken");
+            throw new ResponseErorr(400, EmailAlreadyTaken);
         }
 
         registerRequest.password = await bcrypt.hash(registerRequest.password, 10);
@@ -45,7 +50,7 @@ export class AdminService {
             data: registerRequest
         });
 
-        return toAdminResponse(admin);
+        return toAdminCompleteResponse(admin);
     }
 
     static async login(req: AdminLoginRequest): Promise<AdminLoginResponse> {
@@ -58,13 +63,13 @@ export class AdminService {
         });
 
         if (!admin) {
-            throw new ResponseErorr(404, "Admin not found");
+            throw new ResponseErorr(404, AdminNotFound);
         }
 
         const isPasswordValid = await bcrypt.compare(loginRequest.password, admin.password);
 
         if (!isPasswordValid) {
-            throw new ResponseErorr(401, "Email or password is invalid");
+            throw new ResponseErorr(401, EmailOrPasswordInvalid);
         }
 
         const payload = {
@@ -82,11 +87,11 @@ export class AdminService {
         return toAdminLoginResponse(admin, token);
     }
 
-    static async get(id: number): Promise<AdminResponse> {
-        return toAdminResponse(await this.checkAdminExist(id));
+    static async get(id: number): Promise<AdminCompleteResponse> {
+        return toAdminCompleteResponse(await this.checkAdminExist(id));
     }
 
-    static async update(id: number, req: AdminUpdateRequest): Promise<AdminResponse> {
+    static async update(id: number, req: AdminUpdateRequest): Promise<AdminCompleteResponse> {
         await this.checkAdminExist(id);
 
         const updateRequest = Validation.validate(AdminValidation.UPDATE, req);
@@ -102,6 +107,6 @@ export class AdminService {
             data: updateRequest
         });
 
-        return toAdminResponse(updatedAdmin);
+        return toAdminCompleteResponse(updatedAdmin);
     }
 }

@@ -3,21 +3,17 @@ import { ResponseErorr } from "../error/reponse-error";
 import { Validation } from "../validation/validation";
 import { ParticipantValidation } from "../validation/participant-validation";
 import {
-    ParticipantResponse,
     ParticipantListResponse,
     ParticipantCreateRequest,
     ParticipantUpdateRequest,
-    ParticipantCreateUpdateResponse,
+    ParticipantCompleteResponse,
     ParticipantDeleteResponse,
     toParticipantCompleteResponse,
-    toParticipantResponse,
     toParticipantListResponse,
     toParticipantDeleteResponse,
 } from "../model/participant-model";
-import {
-    ParticipantNotFound,
-    ParticipantDataRequired
-} from "../lib/constant";
+import { ResultCompleteResponse, toResultParticipantResponse } from "../model/result-model"
+import { ParticipantNotFound, ParticipantDataRequired, ResultNotFound } from "../lib/constant";
 
 export class ParticipantService {
     static async getAll(page?: number, limit?: number): Promise<ParticipantListResponse> {
@@ -50,7 +46,7 @@ export class ParticipantService {
             itemsPerPage);
     }
 
-    static async get(id: number): Promise<ParticipantResponse> {
+    static async get(id: number): Promise<ParticipantCompleteResponse> {
         const participant = await prismaClient.participant.findUnique({
             where: { id }
         });
@@ -59,10 +55,32 @@ export class ParticipantService {
             throw new ResponseErorr(404, ParticipantNotFound);
         }
 
-        return toParticipantResponse(participant);
+        return toParticipantCompleteResponse(participant);
     }
 
-    static async create(req: ParticipantCreateRequest): Promise<ParticipantCreateUpdateResponse> {
+    static async getResultsByParticipantId(participantId: number): Promise<ResultCompleteResponse> {
+        // First, check if the participant exists
+        const participantExists = await prismaClient.participant.findUnique({
+            where: { id: participantId }
+        });
+
+        if (!participantExists) {
+            throw new ResponseErorr(404, ParticipantNotFound);
+        }
+
+        // Find results for the specific participant
+        const results = await prismaClient.result.findMany({
+            where: { participant_id: participantId }
+        });
+
+        if (results.length === 0) {
+            throw new ResponseErorr(404, ResultNotFound);
+        }
+
+        return toResultParticipantResponse(results);
+    }
+
+    static async create(req: ParticipantCreateRequest): Promise<ParticipantCompleteResponse> {
         const createRequest = Validation.validate(ParticipantValidation.CREATE, req);
 
         const participant = await prismaClient.participant.create({
@@ -72,7 +90,7 @@ export class ParticipantService {
         return toParticipantCompleteResponse(participant);
     }
 
-    static async update(id: number, req: ParticipantUpdateRequest): Promise<ParticipantCreateUpdateResponse> {
+    static async update(id: number, req: ParticipantUpdateRequest): Promise<ParticipantCompleteResponse> {
         await this.get(id);
 
         if (!Object.keys(req).length) {
