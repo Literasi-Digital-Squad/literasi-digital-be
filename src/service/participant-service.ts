@@ -3,14 +3,12 @@ import { ResponseErorr } from "../error/reponse-error";
 import { Validation } from "../validation/validation";
 import { ParticipantValidation } from "../validation/participant-validation";
 import {
-    ParticipantResponse,
     ParticipantListResponse,
     ParticipantCreateRequest,
     ParticipantUpdateRequest,
-    ParticipantCreateUpdateResponse,
+    ParticipantCompleteResponse,
     ParticipantDeleteResponse,
     toParticipantCompleteResponse,
-    toParticipantResponse,
     toParticipantListResponse,
     toParticipantDeleteResponse,
 } from "../model/participant-model";
@@ -50,7 +48,7 @@ export class ParticipantService {
             itemsPerPage);
     }
 
-    static async get(id: number): Promise<ParticipantResponse> {
+    static async get(id: number): Promise<ParticipantCompleteResponse> {
         const participant = await prismaClient.participant.findUnique({
             where: { id }
         });
@@ -59,10 +57,10 @@ export class ParticipantService {
             throw new ResponseErorr(404, ParticipantNotFound);
         }
 
-        return toParticipantResponse(participant);
+        return toParticipantCompleteResponse(participant);
     }
 
-    static async create(req: ParticipantCreateRequest): Promise<ParticipantCreateUpdateResponse> {
+    static async create(req: ParticipantCreateRequest): Promise<ParticipantCompleteResponse> {
         const createRequest = Validation.validate(ParticipantValidation.CREATE, req);
 
         const participant = await prismaClient.participant.create({
@@ -72,7 +70,7 @@ export class ParticipantService {
         return toParticipantCompleteResponse(participant);
     }
 
-    static async update(id: number, req: ParticipantUpdateRequest): Promise<ParticipantCreateUpdateResponse> {
+    static async update(id: number, req: ParticipantUpdateRequest): Promise<ParticipantCompleteResponse> {
         await this.get(id);
 
         if (!Object.keys(req).length) {

@@ -35,7 +35,7 @@ export type ParticipantUpdateRequest = {
     email?: string;
 };
 
-export type ParticipantCreateUpdateResponse = {
+export type ParticipantCompleteResponse = {
     status: string;
     data: ParticipantResponse[];
 };
@@ -75,7 +75,7 @@ export function toParticipantListResponse(
     };
 }
 
-export function toParticipantCompleteResponse(participant: Participant): ParticipantCreateUpdateResponse {
+export function toParticipantCompleteResponse(participant: Participant): ParticipantCompleteResponse {
     return {
         status: "success",
         data: [toParticipantResponse(participant)]

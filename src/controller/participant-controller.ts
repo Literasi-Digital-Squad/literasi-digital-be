@@ -28,10 +28,7 @@ export class ParticipantController {
             }
 
             const response = await ParticipantService.get(participantId);
-            res.status(200).json({
-                status: "success",
-                data: response
-            });
+            res.status(200).json(response);
         } catch (e) {
             next(e);
         }
