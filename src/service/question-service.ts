@@ -31,6 +31,9 @@ export class QuestionService {
     }
 
     static async getAll(level: number, limit: number, page: number): Promise<QuestionResponse[]> {
+        // check level exists
+        await LevelService.get(level)
+
         const questions = await prismaClient.question.findMany({
             take: limit,
             skip: (page - 1) * limit,

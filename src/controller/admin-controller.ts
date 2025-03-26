@@ -3,13 +3,14 @@ import { AdminLoginRequest, AdminRegisterRequest, AdminUpdateRequest } from "../
 import { AdminService } from "../service/admin-service";
 import { ResponseErorr } from "../error/reponse-error";
 import { InvalidAdminID, UpdateCannotEmpty } from "../lib/constant";
+import { AdminRequest } from "../types/admin-request";
 
 export class AdminController {
     static async register(req: Request, res: Response, next: NextFunction) {
         try {
             const request: AdminRegisterRequest = req.body as AdminRegisterRequest;
             const response = await AdminService.register(request);
-            res.status(200).json(response);
+            res.status(201).json(response);
         } catch (e) {
             next(e);
         }
@@ -26,9 +27,9 @@ export class AdminController {
         }
     }
 
-    static async get(req: Request, res: Response, next: NextFunction) {
+    static async get(req: AdminRequest, res: Response, next: NextFunction) {
         try {
-            const adminId = Number(req.params.id);
+            const adminId = Number(req.admin?.id);
             if (!adminId) {
                 throw new ResponseErorr(400, InvalidAdminID);
             }
@@ -41,13 +42,13 @@ export class AdminController {
         }
     }
 
-    static async update(req: Request, res: Response, next: NextFunction) {
+    static async update(req: AdminRequest, res: Response, next: NextFunction) {
         try {
-            const adminId = Number(req.params.id);
+            const adminId = Number(req.admin?.id);
             if (!adminId) {
                 throw new ResponseErorr(400, InvalidAdminID);
             }
-
+            
             // Cek jika request body kosong
             if (!Object.keys(req.body).length) {
                 throw new ResponseErorr(400, UpdateCannotEmpty);

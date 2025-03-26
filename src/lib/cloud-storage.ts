@@ -1,6 +1,6 @@
 import { S3Client, PutObjectCommand, ObjectCannedACL, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
-import { AWSRegion } from "./constant";
+import { AWSRegion, FailedDeleteFile, FailedUploadFile } from "./constant";
 
 const s3 = new S3Client({
     endpoint: process.env.AWS_URL!,
@@ -32,8 +32,7 @@ export class CloudStorageLib {
 
             return `${process.env.AWS_URL}/${process.env.AWS_S3_BUCKET_NAME}/${fileName}`;
         } catch (error) {
-            console.error("Error uploading file:", error);
-            throw new Error("Failed to upload file");
+            throw new Error(FailedUploadFile);
         }
     }
 
@@ -45,10 +44,8 @@ export class CloudStorageLib {
             };
     
             await s3.send(new DeleteObjectCommand(deleteParams));
-            console.log(`File deleted successfully: ${fileName}`);
         } catch (error) {
-            console.error("Error deleting file:", error);
-            throw new Error("Failed to delete file");
+            throw new Error(FailedDeleteFile);
         }
     }
 }

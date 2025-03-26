@@ -5,17 +5,26 @@ import { InvalidID, Status } from "../lib/constant";
 import { MulterRequest } from "../types/multer-request";
 import { validate as validateUUID } from 'uuid';
 import { ResponseErorr } from "../error/reponse-error";
+import { CreateAnswerRequest, UpdateAnswerRequest } from "../model/answer-model";
+import { AnswerService } from "../service/answer-service";
 
-export class QuestionController {
+export class AnswerController {
     static async create(req: MulterRequest, res: Response, next: NextFunction) {
         try {
-            const request: CreateQuestionRequest = {
-                level_id: Number(req.body.level_id),
+            const question_id = req.params.question_id
+            if (!validateUUID(question_id)) {
+                throw new ResponseErorr(400, InvalidID);
+            }
+
+            const request: CreateAnswerRequest = {
                 body: req.body.body,
                 image: req.file,
+                is_correct: req.body.is_correct === "true" ? true :
+                        req.body.is_correct === "false" ? false :
+                        undefined
             };
 
-            const response = await QuestionService.create(request);
+            const response = await AnswerService.create(question_id, request);
             res.status(201).json({
                 status: Status.Success,
                 data: response
@@ -27,23 +36,15 @@ export class QuestionController {
 
     static async getAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const level = parseInt(req.query.level as string) || 1
-            const limit = parseInt(req.query.limit as string) || 10
-            const page = parseInt(req.query.page as string) || 1
-            const response = await QuestionService.getAll(level, limit, page);
+            const question_id = req.params.question_id
+            if (!validateUUID(question_id)) {
+                throw new ResponseErorr(400, InvalidID);
+            }
 
-            const totalItems = await QuestionService.countQuestions(level);
-            const totalPages = Math.ceil(totalItems / limit);
-
+            const response = await AnswerService.getAll(question_id);
             res.status(200).json({
                 status: Status.Success,
                 data: response,
-                pagination: {
-                    total_items: totalItems,
-                    total_pages: totalPages,
-                    current_page: page,
-                    items_per_page: limit
-                }
             });
         } catch (e) {
             next(e);
@@ -52,12 +53,13 @@ export class QuestionController {
 
     static async get(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.params.question_id
-            if (!validateUUID(id)) {
+            const answer_id = parseInt(req.params.answer_id, 10);
+            const question_id = req.params.question_id
+            if (!validateUUID(question_id) || isNaN(answer_id)) {
                 throw new ResponseErorr(400, InvalidID);
             }
 
-            const response = await QuestionService.get(id);
+            const response = await AnswerService.get(question_id, answer_id);
             res.status(200).json({
                 status: Status.Success,
                 data: response
@@ -69,18 +71,21 @@ export class QuestionController {
 
     static async update(req: MulterRequest, res: Response, next: NextFunction) {
         try {
-            const id = req.params.question_id
-            if (!validateUUID(id)) {
+            const answer_id = parseInt(req.params.answer_id, 10);
+            const question_id = req.params.question_id
+            if (!validateUUID(question_id) || isNaN(answer_id)) {
                 throw new ResponseErorr(400, InvalidID);
             }
 
-            const request: UpdateQuestionRequest = {
-                level_id: Number(req.body.level_id),
+            const request: UpdateAnswerRequest = {
                 body: req.body.body,
                 image: req.file,
+                is_correct: req.body.is_correct === "true" ? true :
+                        req.body.is_correct === "false" ? false :
+                        undefined
             };
 
-            const response = await QuestionService.update(id, request);
+            const response = await AnswerService.update(question_id, answer_id, request);
             res.status(200).json({
                 status: Status.Success,
                 data: response
@@ -92,12 +97,13 @@ export class QuestionController {
 
     static async delete(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.params.question_id
-            if (!validateUUID(id)) {
+            const answer_id = parseInt(req.params.answer_id, 10);
+            const question_id = req.params.question_id
+            if (!validateUUID(question_id) || isNaN(answer_id)) {
                 throw new ResponseErorr(400, InvalidID);
             }
 
-            await QuestionService.delete(id);
+            await AnswerService.delete(question_id, answer_id);
             res.status(200).json({
                 status: Status.Success,
             });
