@@ -6,6 +6,7 @@ import { QuestionController } from '../controller/question-controller'
 import { ParticipantController } from '../controller/participant-controller'
 import { ResultController } from '../controller/result-controller'
 import multer from 'multer'
+import { AnswerController } from '../controller/answer-controller'
 
 export const apiRouter = express.Router()
 
@@ -22,8 +23,8 @@ apiRouter.delete('/admin/participants/:id', ParticipantController.delete)
 apiRouter.get('/admin/results', ResultController.getAll)
 
 // Auth API
-apiRouter.get('/admin/:id', AdminController.get);
-apiRouter.put('/admin/:id', AdminController.update);
+apiRouter.get('/admin', AdminController.get);
+apiRouter.put('/admin', AdminController.update);
 
 // Level API
 apiRouter.get('/admin/levels', LevelController.getAll)
@@ -36,3 +37,10 @@ apiRouter.get('/admin/questions', QuestionController.getAll)
 apiRouter.get('/admin/questions/:question_id', QuestionController.get)
 apiRouter.put('/admin/questions/:question_id', upload.single('image'), QuestionController.update)
 apiRouter.delete('/admin/questions/:question_id', QuestionController.delete)
+
+// Answer API
+apiRouter.post('/admin/questions/:question_id/answers', upload.single('image'), AnswerController.create)
+apiRouter.get('/admin/questions/:question_id/answers', AnswerController.getAll)
+apiRouter.get('/admin/questions/:question_id/answers/:answer_id', AnswerController.get)
+apiRouter.put('/admin/questions/:question_id/answers/:answer_id', upload.single('image'), AnswerController.update)
+apiRouter.delete('/admin/questions/:question_id/answers/:answer_id', AnswerController.delete)

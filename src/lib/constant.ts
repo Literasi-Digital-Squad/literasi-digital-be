@@ -36,6 +36,8 @@ export const Unauthorized = "unauthorized"
 
 // AWS S3
 export const AWSRegion = "ap-southeast-3"
+export const FailedUploadFile = "failed to upload file"
+export const FailedDeleteFile = "failed to delete file"
 
 // API Message
 export const Status = {
@@ -64,3 +66,6 @@ export const EmailAlreadyTaken = "Email Has Already Been Taken"
 export const EmailOrPasswordInvalid = "Email or Password is Invalidd"
 export const InvalidAdminID = "Invalid Admin ID"
 export const UpdateCannotEmpty = "Update Request Cannot be Empty"
+
+// Answer constant
+export const AnswerNotFound = "result not found"

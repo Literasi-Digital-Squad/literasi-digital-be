@@ -24,6 +24,7 @@ export class LevelController {
             if (isNaN(id)) {
                 throw new ResponseErorr(400, InvalidID)
             }
+            
             const response = await LevelService.get(id)
             res.status(200).json({
                 status: Status.Success,
