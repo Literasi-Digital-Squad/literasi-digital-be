@@ -54,3 +54,10 @@ export const QuestionNotFound = "question not found"
 export const ParticipantNotFound = "Participant not found"
 export const InvalidParticipantID = "Invalid participant ID"
 export const ParticipantDataRequired = "Participants Data Is Required"
+
+// Admin constant
+export const AdminNotFound = "Admin not found"
+export const EmailAlreadyTaken = "Email has already been taken"
+export const EmailOrPasswordInvalid = "Email or password is invalidd"
+export const InvalidAdminID = "Invalid admin ID"
+export const UpdateCannotEmpty = "Update request cannot be empty"

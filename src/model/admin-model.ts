@@ -14,7 +14,7 @@ export type AdminLoginResponse = {
     token: string
 }
 
-export type AdminRegisterResponse = {
+export type AdminCompleteResponse = {
     status: string,
     data: AdminResponse
 }
@@ -59,7 +59,7 @@ export function toAdminLoginResponse(admin: Admin, token: string): AdminLoginRes
     }
 }
 
-export function toAdminRegisterResponse(admin: Admin): AdminRegisterResponse {
+export function toAdminCompleteResponse(admin: Admin): AdminCompleteResponse {
     return {
         status: "success",
         data: toAdminResponse(admin)
