@@ -49,3 +49,8 @@ export const LevelNotFound = "level not found"
 
 // Question constant
 export const QuestionNotFound = "question not found"
+
+// Participant constant
+export const ParticipantNotFound = "Participant not found"
+export const InvalidParticipantID = "Invalid participant ID"
+export const ParticipantDataRequired = "Participants Data Is Required"
