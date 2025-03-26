@@ -12,10 +12,8 @@ import {
     toParticipantListResponse,
     toParticipantDeleteResponse,
 } from "../model/participant-model";
-import {
-    ParticipantNotFound,
-    ParticipantDataRequired
-} from "../lib/constant";
+import { ResultCompleteResponse, toResultParticipantResponse } from "../model/result-model"
+import { ParticipantNotFound, ParticipantDataRequired, ResultNotFound } from "../lib/constant";
 
 export class ParticipantService {
     static async getAll(page?: number, limit?: number): Promise<ParticipantListResponse> {
@@ -58,6 +56,28 @@ export class ParticipantService {
         }
 
         return toParticipantCompleteResponse(participant);
+    }
+
+    static async getResultsByParticipantId(participantId: number): Promise<ResultCompleteResponse> {
+        // First, check if the participant exists
+        const participantExists = await prismaClient.participant.findUnique({
+            where: { id: participantId }
+        });
+
+        if (!participantExists) {
+            throw new ResponseErorr(404, ParticipantNotFound);
+        }
+
+        // Find results for the specific participant
+        const results = await prismaClient.result.findMany({
+            where: { participant_id: participantId }
+        });
+
+        if (results.length === 0) {
+            throw new ResponseErorr(404, ResultNotFound);
+        }
+
+        return toResultParticipantResponse(results);
     }
 
     static async create(req: ParticipantCreateRequest): Promise<ParticipantCompleteResponse> {

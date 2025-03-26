@@ -4,6 +4,7 @@ import { AdminController } from '../controller/admin-controller'
 import { LevelController } from '../controller/level-controller'
 import { QuestionController } from '../controller/question-controller'
 import { ParticipantController } from '../controller/participant-controller'
+import { ResultController } from '../controller/result-controller'
 import multer from 'multer'
 
 export const apiRouter = express.Router()
@@ -16,6 +17,9 @@ apiRouter.use(authMiddleware)
 apiRouter.get('/admin/participants', ParticipantController.getAll)
 apiRouter.put('/admin/participants/:id', ParticipantController.update)
 apiRouter.delete('/admin/participants/:id', ParticipantController.delete)
+
+// Result API
+apiRouter.get('/admin/results', ResultController.getAll)
 
 // Auth API
 apiRouter.get('/admin/:id', AdminController.get);

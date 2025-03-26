@@ -55,9 +55,12 @@ export const ParticipantNotFound = "Participant not found"
 export const InvalidParticipantID = "Invalid participant ID"
 export const ParticipantDataRequired = "Participants Data Is Required"
 
+// Result constant
+export const ResultNotFound = "Result Not Found"
+
 // Admin constant
-export const AdminNotFound = "Admin not found"
-export const EmailAlreadyTaken = "Email has already been taken"
-export const EmailOrPasswordInvalid = "Email or password is invalidd"
-export const InvalidAdminID = "Invalid admin ID"
-export const UpdateCannotEmpty = "Update request cannot be empty"
+export const AdminNotFound = "Admin Not Found"
+export const EmailAlreadyTaken = "Email Has Already Been Taken"
+export const EmailOrPasswordInvalid = "Email or Password is Invalidd"
+export const InvalidAdminID = "Invalid Admin ID"
+export const UpdateCannotEmpty = "Update Request Cannot be Empty"

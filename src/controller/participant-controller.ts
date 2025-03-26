@@ -34,6 +34,16 @@ export class ParticipantController {
         }
     }
 
+    static async getResultsByParticipantId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const participantId = Number(req.params.id);
+            const results = await ParticipantService.getResultsByParticipantId(participantId);
+            res.status(200).json(results);
+        } catch (error) {
+            next(error);
+        }
+    }
+
     static async create(req: Request, res: Response, next: NextFunction) {
         try {
             const request: ParticipantCreateRequest = req.body as ParticipantCreateRequest;
