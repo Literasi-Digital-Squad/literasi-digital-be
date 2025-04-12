@@ -10,6 +10,7 @@ import {
     toResultListResponse,
 } from "../model/result-model";
 import { ResultNotFound } from "../lib/constant";
+import { ResultQuestionResponse } from "../model/result_question-model";
 
 export class ResultService {
     static async getAll(

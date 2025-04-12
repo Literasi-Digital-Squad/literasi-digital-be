@@ -45,7 +45,7 @@ Response Body (Failed):
 
 ## GET Single Result
 
-Enfpoint: GET /v1/admin/results/:id
+Endpoint: GET /v1/admin/results/:id
 
 Request Header:
 

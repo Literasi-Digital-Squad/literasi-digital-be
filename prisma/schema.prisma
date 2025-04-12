@@ -94,9 +94,10 @@ model Result {
 }
 
 model ResultQuestion {
-  id             String         @id @default(uuid()) @db.Uuid
+  id             Int            @id @default(autoincrement())
   result_id      String         @db.Uuid
   result         Result         @relation(fields: [result_id], references: [id])
+  level_id       Int
   body           String?        @db.Text
   image_url      String?        @db.VarChar(255)
   result_answers ResultAnswer[]
@@ -108,8 +109,8 @@ model ResultQuestion {
 }
 
 model ResultAnswer {
-  id                 String         @id @default(uuid()) @db.Uuid
-  result_question_id String         @db.Uuid
+  id                 Int            @id @default(autoincrement())
+  result_question_id Int
   result_question    ResultQuestion @relation(fields: [result_question_id], references: [id])
   body               String?        @db.Text
   image_url          String?        @db.VarChar(255)
