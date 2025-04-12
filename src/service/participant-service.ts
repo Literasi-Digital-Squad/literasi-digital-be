@@ -4,6 +4,8 @@ import { Validation } from "../validation/validation";
 import { ParticipantValidation } from "../validation/participant-validation";
 import {
     ParticipantListResponse,
+    ParticipantWithResultListResponse,
+    toParticipantWithResultListResponse,
     ParticipantCreateRequest,
     ParticipantUpdateRequest,
     ParticipantCompleteResponse,
@@ -44,6 +46,40 @@ export class ParticipantService {
             totalPages,
             currentPage,
             itemsPerPage);
+    }
+
+    static async getAllWithResult(page?: number, limit?: number): Promise<ParticipantWithResultListResponse> {
+        const validatedQuery = Validation.validate(ParticipantValidation.LIST_QUERY, { page, limit });
+
+        const currentPage = validatedQuery.page ?? 1;
+        const itemsPerPage = validatedQuery.limit ?? 10;
+
+        const skip = (currentPage - 1) * itemsPerPage;
+
+        const [totalParticipants, participants] = await Promise.all([
+            prismaClient.participant.count(),
+            prismaClient.participant.findMany({
+                skip,
+                take: itemsPerPage,
+                include: {
+                    results: true
+                }
+            })
+        ]);
+
+        if (totalParticipants === 0) {
+            throw new ResponseErorr(404, ParticipantNotFound);
+        }
+
+        const totalPages = Math.ceil(totalParticipants / itemsPerPage);
+
+        return toParticipantWithResultListResponse(
+            participants,
+            totalParticipants,
+            totalPages,
+            currentPage,
+            itemsPerPage
+        );
     }
 
     static async get(id: number): Promise<ParticipantCompleteResponse> {

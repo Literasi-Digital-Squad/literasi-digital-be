@@ -1,4 +1,4 @@
-import { Participant } from "@prisma/client";
+import { Participant, Result } from "@prisma/client";
 
 export type ParticipantResponse = {
     id: number;
@@ -87,3 +87,78 @@ export function toParticipantDeleteResponse(): ParticipantDeleteResponse {
         status: "success"
     };
 }
+
+// GetAllWithResult
+
+export type ResultResponse = {
+    id: string;
+    level_result: number;
+    description?: string | null;
+    created_at: string;
+    updated_at: string;
+};
+
+export type ParticipantWithResultResponse = {
+    id: number;
+    name: string;
+    age: number;
+    phone: string;
+    email: string;
+    created_at: string;
+    updated_at: string;
+    results: ResultResponse[];
+};
+
+export type ParticipantWithResultListResponse = {
+    status: string;
+    data: ParticipantWithResultResponse[];
+    pagination: {
+        total_items: number;
+        total_pages: number;
+        current_page: number;
+        items_per_page: number;
+    };
+};
+
+export function toResultResponse(result: Result): ResultResponse {
+    return {
+        id: result.id,
+        level_result: result.level_result,
+        description: result.description,
+        created_at: result.created_at.toISOString(),
+        updated_at: result.updated_at.toISOString()
+    };
+}
+
+export function toParticipantWithResultResponse(participant: Participant & { results: Result[] }): ParticipantWithResultResponse {
+    return {
+        id: participant.id,
+        name: participant.name,
+        age: participant.age,
+        phone: participant.phone,
+        email: participant.email,
+        created_at: participant.created_at.toISOString(),
+        updated_at: participant.updated_at.toISOString(),
+        results: participant.results.map(toResultResponse)
+    };
+}
+
+export function toParticipantWithResultListResponse(
+    participants: (Participant & { results: Result[] })[],
+    total_items: number,
+    total_pages: number,
+    current_page: number,
+    items_per_page: number
+): ParticipantWithResultListResponse {
+    return {
+        status: "success",
+        data: participants.map(toParticipantWithResultResponse),
+        pagination: {
+            total_items,
+            total_pages,
+            current_page,
+            items_per_page
+        }
+    };
+}
+

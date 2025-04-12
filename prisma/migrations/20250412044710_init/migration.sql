@@ -73,8 +73,9 @@ CREATE TABLE "results" (
 
 -- CreateTable
 CREATE TABLE "result_questions" (
-    "id" UUID NOT NULL,
+    "id" SERIAL NOT NULL,
     "result_id" UUID NOT NULL,
+    "level_id" INTEGER NOT NULL,
     "body" TEXT,
     "image_url" VARCHAR(255),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -85,8 +86,8 @@ CREATE TABLE "result_questions" (
 
 -- CreateTable
 CREATE TABLE "result_answers" (
-    "id" UUID NOT NULL,
-    "result_question_id" UUID NOT NULL,
+    "id" SERIAL NOT NULL,
+    "result_question_id" INTEGER NOT NULL,
     "body" TEXT,
     "image_url" VARCHAR(255),
     "answered" BOOLEAN NOT NULL,

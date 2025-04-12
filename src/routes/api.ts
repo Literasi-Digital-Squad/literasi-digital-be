@@ -7,6 +7,7 @@ import { ParticipantController } from '../controller/participant-controller'
 import { ResultController } from '../controller/result-controller'
 import multer from 'multer'
 import { AnswerController } from '../controller/answer-controller'
+import { ResultQuestionController } from '../controller/result_question-controller'
 
 export const apiRouter = express.Router()
 
@@ -16,11 +17,15 @@ apiRouter.use(authMiddleware)
 
 // Participant API
 apiRouter.get('/admin/participants', ParticipantController.getAll)
+apiRouter.get('/admin/participants_with_result', ParticipantController.getAllWithResult)
 apiRouter.put('/admin/participants/:id', ParticipantController.update)
 apiRouter.delete('/admin/participants/:id', ParticipantController.delete)
 
 // Result API
 apiRouter.get('/admin/results', ResultController.getAll)
+
+// Result Answer API
+apiRouter.get('/admin/results/:result_id/question_detail', ResultQuestionController.getResultQuestionsDetail)
 
 // Auth API
 apiRouter.get('/admin', AdminController.get);
