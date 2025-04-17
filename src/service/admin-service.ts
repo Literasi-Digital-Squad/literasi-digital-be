@@ -15,6 +15,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import {
     AdminNotFound,
+    DefaultJwtDur,
     EmailAlreadyTaken,
     EmailOrPasswordInvalid
 } from "../lib/constant";
@@ -81,7 +82,7 @@ export class AdminService {
         };
         
         const secretKey = process.env.ADMIN_SECRET_KEY ?? process.env.SECRET_KEY!;
-        const expiresIn = parseInt(process.env.TOKEN_DURATION ?? '10800');
+        const expiresIn = parseInt(process.env.TOKEN_DURATION ?? DefaultJwtDur);
         const token = jwt.sign(payload, secretKey, { expiresIn: expiresIn });
 
         return toAdminLoginResponse(admin, token);
