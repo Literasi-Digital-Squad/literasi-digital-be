@@ -7,6 +7,14 @@ export const Server = {
     StartMsg: (port: string | number) =>
         `Server is listening on http://localhost:${port}`,
 };
+export const ENV = {
+    DEVELOPMENT: "development",
+    STAGING: "staging",
+    PRODUCTION: "production"
+}
+export const NotAllowedCorsErr = new Error('Not allowed by CORS')
+export const AllowedCorsMethods = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+export const AllowedCorsHeaders = ['Content-Type', 'Authorization']
 
 // Database constant
 export enum Emit {
@@ -45,6 +53,9 @@ export const Status = {
     Error: "error"
 }
 export const InvalidID = "invalid id format"
+
+// Admin constant
+export const DefaultJwtDur = '10800'
 
 // Level constant
 export const LevelNotFound = "level not found"

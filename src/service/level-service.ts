@@ -7,7 +7,11 @@ import { Validation } from "../validation/validation";
 
 export class LevelService {
     static async getAll(): Promise<LevelResponse[]> {
-        const levels = await prismaClient.level.findMany()
+        const levels = await prismaClient.level.findMany({
+            orderBy: {
+                level: 'asc'
+            }
+        })
 
         return toLevelResponseArray(levels)
     }
