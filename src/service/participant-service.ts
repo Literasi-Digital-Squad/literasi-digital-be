@@ -119,6 +119,8 @@ export class ParticipantService {
     static async create(req: ParticipantCreateRequest): Promise<ParticipantCompleteResponse> {
         const createRequest = Validation.validate(ParticipantValidation.CREATE, req);
 
+        // Todo: If Email taken, update the data
+
         const participant = await prismaClient.participant.create({
             data: createRequest
         });
@@ -132,6 +134,8 @@ export class ParticipantService {
         if (!Object.keys(req).length) {
             throw new ResponseErorr(400, ParticipantDataRequired);
         }
+
+        // Todo: If Email taken by other participant, update the data. Or else cannot update email.
 
         const updateRequest = Validation.validate(ParticipantValidation.UPDATE, req);
 

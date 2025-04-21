@@ -32,6 +32,8 @@ export class ResultService {
             ? { participant_id: validatedQuery.participant_id } 
             : {};
 
+        // Todo: Include Participant
+
         const [totalResults, results] = await Promise.all([
             prismaClient.result.count({ where: whereCondition }),
             prismaClient.result.findMany({
@@ -70,6 +72,8 @@ export class ResultService {
 
     static async create(req: ResultCreateRequest): Promise<ResultCompleteResponse> {
         const createRequest = Validation.validate(ResultValidation.CREATE, req);
+
+        // Todo: Get desc level and assign to createRequest.desc
 
         const result = await prismaClient.result.create({
             data: createRequest
