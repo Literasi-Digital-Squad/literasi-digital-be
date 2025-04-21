@@ -119,11 +119,21 @@ export class ParticipantService {
     static async create(req: ParticipantCreateRequest): Promise<ParticipantCompleteResponse> {
         const createRequest = Validation.validate(ParticipantValidation.CREATE, req);
 
-        // Todo: If Email taken, update the data
-
-        const participant = await prismaClient.participant.create({
-            data: createRequest
+        const existing = await prismaClient.participant.findUnique({
+            where: { email: createRequest.email }
         });
+
+        let participant;
+        if (existing) {
+            participant = await prismaClient.participant.update({
+                where: { id: existing.id },
+                data: createRequest
+            });
+        } else {
+            participant = await prismaClient.participant.create({
+                data: createRequest
+            });
+        }
 
         return toParticipantCompleteResponse(participant);
     }
@@ -135,7 +145,15 @@ export class ParticipantService {
             throw new ResponseErorr(400, ParticipantDataRequired);
         }
 
-        // Todo: If Email taken by other participant, update the data. Or else cannot update email.
+        if (req.email) {
+            const existing = await prismaClient.participant.findUnique({
+                where: { email: req.email }
+            });
+
+            if (existing && existing.id !== id) {
+                throw new ResponseErorr(400, "Email is already taken by another participant.");
+            }
+        }
 
         const updateRequest = Validation.validate(ParticipantValidation.UPDATE, req);
 

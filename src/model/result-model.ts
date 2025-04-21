@@ -1,4 +1,10 @@
-import { Result } from "@prisma/client";
+import { Result, Participant } from "@prisma/client";
+
+export type ParticipantBasic = {
+    id: number;
+    name: string;
+    email: string;
+};
 
 export type ResultResponse = {
     id: string;
@@ -7,6 +13,7 @@ export type ResultResponse = {
     description?: string;
     created_at: string;
     updated_at: string;
+    participant?: ParticipantBasic; // optional, hanya kalau include
 };
 
 export type ResultListResponse = {
@@ -31,16 +38,24 @@ export type ResultCompleteResponse = {
     data: ResultResponse[];
 };
 
-export function toResultResponse(result: Result): ResultResponse {
+export function toResultResponse(result: Result & { participant?: Participant }): ResultResponse {
     return {
         id: result.id,
         participant_id: result.participant_id,
         level_result: result.level_result,
         description: result.description ?? undefined,
         created_at: result.created_at.toISOString(),
-        updated_at: result.updated_at.toISOString()
+        updated_at: result.updated_at.toISOString(),
+        participant: result.participant 
+            ? {
+                id: result.participant.id,
+                name: result.participant.name,
+                email: result.participant.email
+            } 
+            : undefined
     };
 }
+
 
 export function toResultListResponse(
     results: Result[],
