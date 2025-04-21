@@ -37,7 +37,8 @@ export class ResultService {
             prismaClient.result.findMany({
                 where: whereCondition,
                 skip,
-                take: itemsPerPage
+                take: itemsPerPage,
+                include: { participant: true } // Include data participant
             })
         ]);
 
@@ -71,8 +72,23 @@ export class ResultService {
     static async create(req: ResultCreateRequest): Promise<ResultCompleteResponse> {
         const createRequest = Validation.validate(ResultValidation.CREATE, req);
 
+        // Ambil deskripsi dari level yang sesuai
+        const level = await prismaClient.level.findFirst({
+            where: {
+                level: createRequest.level_result
+            }
+        });
+
+        if (!level) {
+            throw new ResponseErorr(404, `Level with value ${createRequest.level_result} not found`);
+        }
+
+        // Tambahkan description dari level ke createRequest
         const result = await prismaClient.result.create({
-            data: createRequest
+            data: {
+                ...createRequest,
+                description: level.description ?? null
+            }
         });
 
         return toResultCompleteResponse(result);

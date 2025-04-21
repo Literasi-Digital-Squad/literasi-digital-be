@@ -38,6 +38,9 @@ export class AnswerService {
         const answers = await prismaClient.answer.findMany({
             where: {
                 question_id: question_id
+            },
+            orderBy: {
+                id: 'asc'
             }
         })
         
@@ -96,6 +99,11 @@ export class AnswerService {
                 id: answer_id
             }
         })
+
+        if (answer.image_url) {
+            const imageName = answer.image_url.split('/').pop()
+            CloudStorageLib.deleteS3(imageName!)
+        }
 
         return toAnswerResponse(answer)
     }

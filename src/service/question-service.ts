@@ -5,6 +5,7 @@ import { QuestionNotFound } from "../lib/constant";
 import { CreateQuestionRequest, QuestionResponse, toQuestionResponse, toQuestionResponseArray, UpdateQuestionRequest } from "../model/question-model";
 import { QuestionValidation } from "../validation/question-validation";
 import { Validation } from "../validation/validation";
+import { AnswerService } from "./answer-service";
 import { LevelService } from "./level-service";
 
 export class QuestionService {
@@ -97,8 +98,25 @@ export class QuestionService {
         const question = await prismaClient.question.delete({
             where: {
                 id: question_id
+            },
+            include: {
+                answers: true
             }
         })
+
+        if (question.answers.length > 0) {
+            question.answers.forEach(answer => {
+                if (answer.image_url) {
+                    const imageName = answer.image_url.split('/').pop()
+                    CloudStorageLib.deleteS3(imageName!)
+                }
+            });
+        }
+
+        if (question.image_url) {
+            const imageName = question.image_url.split('/').pop()
+            CloudStorageLib.deleteS3(imageName!)
+        }
     
         return toQuestionResponse(question);
     }

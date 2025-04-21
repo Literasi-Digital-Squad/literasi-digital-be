@@ -19,7 +19,7 @@ model Participant {
   age     Int
   phone   String   @db.VarChar(100)
   email   String   @unique @db.VarChar(255)
-  results Result[]
+  results Result[] @relation()
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -68,7 +68,7 @@ model Question {
 model Answer {
   id          Int      @id @default(autoincrement())
   question_id String   @db.Uuid
-  question    Question @relation(fields: [question_id], references: [id])
+  question    Question @relation(fields: [question_id], references: [id], onDelete: Cascade)
   body        String?  @db.Text
   image_url   String?  @db.VarChar(255)
   is_correct  Boolean
@@ -82,7 +82,7 @@ model Answer {
 model Result {
   id               String           @id @default(uuid()) @db.Uuid
   participant_id   Int
-  participant      Participant      @relation(fields: [participant_id], references: [id])
+  participant      Participant      @relation(fields: [participant_id], references: [id], onDelete: Cascade)
   level_result     Int
   description      String?          @db.Text
   result_questions ResultQuestion[]
@@ -96,7 +96,7 @@ model Result {
 model ResultQuestion {
   id             Int            @id @default(autoincrement())
   result_id      String         @db.Uuid
-  result         Result         @relation(fields: [result_id], references: [id])
+  result         Result         @relation(fields: [result_id], references: [id], onDelete: Cascade)
   level_id       Int
   body           String?        @db.Text
   image_url      String?        @db.VarChar(255)
@@ -111,7 +111,7 @@ model ResultQuestion {
 model ResultAnswer {
   id                 Int            @id @default(autoincrement())
   result_question_id Int
-  result_question    ResultQuestion @relation(fields: [result_question_id], references: [id])
+  result_question    ResultQuestion @relation(fields: [result_question_id], references: [id], onDelete: Cascade)
   body               String?        @db.Text
   image_url          String?        @db.VarChar(255)
   answered           Boolean
