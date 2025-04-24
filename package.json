@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seeders/seed.ts"
+  },
   "scripts": {
-    "dev": "ts-node src/app/app.ts",
-    "test": "jest"
+    "start": "node dist/src/app/app.js",
+    "dev": "nodemon run",
+    "test": "jest",
+    "build": "tsc"
   },
   "jest": {
     "transform": {
