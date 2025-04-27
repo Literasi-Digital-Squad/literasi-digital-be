@@ -15,4 +15,11 @@ export class QuestionValidation {
         .custom<Express.Multer.File>((file) => file && typeof file === "object" && "buffer" in file)
         .optional(),
     })
+    static readonly GETNEXTQUESTION: ZodType = z.object({
+        theta: z.number().min(1).max(10).optional(),
+        question_id: z.string().uuid(),
+        answer_id: z.number().min(1),
+        wrong_streak: z.number().min(0),
+        correct_streak: z.number().min(0)
+    })
 }

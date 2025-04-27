@@ -47,6 +47,10 @@ export const AWSRegion = "ap-southeast-3"
 export const FailedUploadFile = "failed to upload file"
 export const FailedDeleteFile = "failed to delete file"
 
+// IRT
+export const CacheExpirationTime: number = 5 * 60 * 1000
+export const getAllLevelCache = "level:getAll"
+
 // API Message
 export const Status = {
     Success: "success",
@@ -62,6 +66,7 @@ export const LevelNotFound = "level not found"
 
 // Question constant
 export const QuestionNotFound = "question not found"
+export const InitialQuestionLevel = 3
 
 // Participant constant
 export const ParticipantNotFound = "Participant not found"

@@ -28,6 +28,7 @@ CREATE TABLE "levels" (
     "id" SERIAL NOT NULL,
     "level" INTEGER NOT NULL,
     "description" TEXT,
+    "a" DOUBLE PRECISION NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -108,13 +109,13 @@ CREATE UNIQUE INDEX "admin_email_key" ON "admin"("email");
 ALTER TABLE "questions" ADD CONSTRAINT "questions_level_id_fkey" FOREIGN KEY ("level_id") REFERENCES "levels"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "answers" ADD CONSTRAINT "answers_question_id_fkey" FOREIGN KEY ("question_id") REFERENCES "questions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "answers" ADD CONSTRAINT "answers_question_id_fkey" FOREIGN KEY ("question_id") REFERENCES "questions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "results" ADD CONSTRAINT "results_participant_id_fkey" FOREIGN KEY ("participant_id") REFERENCES "participants"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "results" ADD CONSTRAINT "results_participant_id_fkey" FOREIGN KEY ("participant_id") REFERENCES "participants"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "result_questions" ADD CONSTRAINT "result_questions_result_id_fkey" FOREIGN KEY ("result_id") REFERENCES "results"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "result_questions" ADD CONSTRAINT "result_questions_result_id_fkey" FOREIGN KEY ("result_id") REFERENCES "results"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "result_answers" ADD CONSTRAINT "result_answers_result_question_id_fkey" FOREIGN KEY ("result_question_id") REFERENCES "result_questions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "result_answers" ADD CONSTRAINT "result_answers_result_question_id_fkey" FOREIGN KEY ("result_question_id") REFERENCES "result_questions"("id") ON DELETE CASCADE ON UPDATE CASCADE;

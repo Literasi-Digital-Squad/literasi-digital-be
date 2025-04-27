@@ -111,4 +111,21 @@ export class AnswerController {
             next(e);
         }
     }
+
+    static async getAllRandom(req: Request, res: Response, next: NextFunction) {
+        try {
+            const question_id = req.params.question_id
+            if (!validateUUID(question_id)) {
+                throw new ResponseErorr(400, InvalidID);
+            }
+
+            const response = await AnswerService.getAllRandom(question_id);
+            res.status(200).json({
+                status: Status.Success,
+                data: response,
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
 }

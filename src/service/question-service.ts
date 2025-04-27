@@ -1,8 +1,10 @@
+import { Question } from "@prisma/client";
 import { prismaClient } from "../app/database";
 import { ResponseErorr } from "../error/reponse-error";
 import { CloudStorageLib } from "../lib/cloud-storage";
-import { QuestionNotFound } from "../lib/constant";
-import { CreateQuestionRequest, QuestionResponse, toQuestionResponse, toQuestionResponseArray, UpdateQuestionRequest } from "../model/question-model";
+import { InitialQuestionLevel, QuestionNotFound } from "../lib/constant";
+import { IRT } from "../lib/irt";
+import { CreateQuestionRequest, GetNextQuestionRequest, NextQuestionResponse, QuestionResponse, toQuestionResponse, toQuestionResponseArray, UpdateQuestionRequest } from "../model/question-model";
 import { QuestionValidation } from "../validation/question-validation";
 import { Validation } from "../validation/validation";
 import { AnswerService } from "./answer-service";
@@ -119,6 +121,48 @@ export class QuestionService {
         }
     
         return toQuestionResponse(question);
+    }
+
+    static async getInitialQuestion(): Promise<QuestionResponse> {
+        const question: Question[] = await prismaClient.$queryRaw`SELECT * FROM "questions" WHERE "level_id" = ${InitialQuestionLevel} ORDER BY RANDOM() LIMIT 1`;
+        if (question.length == 0) {
+            throw new ResponseErorr(404, QuestionNotFound);
+        }
+
+        return toQuestionResponse(question[0])
+    }
+
+    static async getNextQuestion(req: GetNextQuestionRequest): Promise<NextQuestionResponse> {
+        const nextQuestionReq = Validation.validate(QuestionValidation.GETNEXTQUESTION, req)
+        if (!nextQuestionReq.theta || nextQuestionReq.theta <= 0) {
+            nextQuestionReq.theta = 3
+        }
+
+        const rightAnswer = await AnswerService.getRightAnswer(nextQuestionReq.question_id)
+        let is_correct = rightAnswer.id == nextQuestionReq.answer_id
+        if (rightAnswer.id == nextQuestionReq.answer_id) {
+            is_correct = true
+            nextQuestionReq.correct_streak += 1
+            nextQuestionReq.wrong_streak = 0
+        } else {
+            nextQuestionReq.correct_streak = 0
+            nextQuestionReq.wrong_streak += 1
+        }
+
+        const nextLevel = await IRT.calculate(nextQuestionReq.theta)
+        const newTheta = IRT.updateTheta(nextQuestionReq.theta, is_correct, nextQuestionReq.wrong_streak, nextQuestionReq.correct_streak)
+
+        const question: Question[] = await prismaClient.$queryRaw`SELECT * FROM "questions" WHERE "level_id" = ${nextLevel} ORDER BY RANDOM() LIMIT 1`;
+        if (question.length == 0) {
+            throw new ResponseErorr(404, QuestionNotFound);
+        }
+
+        return {
+            ...toQuestionResponse(question[0]),
+            theta: newTheta,
+            wrong_streak: nextQuestionReq.wrong_streak,
+            correct_streak: nextQuestionReq.correct_streak
+        }
     }
 
     // Helper function

@@ -1,6 +1,7 @@
 import { prismaClient } from "../app/database";
 import { ResponseErorr } from "../error/reponse-error";
 import { LevelNotFound } from "../lib/constant";
+import { IRT } from "../lib/irt";
 import { LevelResponse, toLevelResponse, toLevelResponseArray, UpdateLevelRequest } from "../model/level-model";
 import { LevelValidation } from "../validation/level-validation";
 import { Validation } from "../validation/validation";
@@ -12,6 +13,10 @@ export class LevelService {
                 level: 'asc'
             }
         })
+
+        if (levels.length == 0) {
+            throw new ResponseErorr(404, LevelNotFound)
+        }
 
         return toLevelResponseArray(levels)
     }
@@ -42,6 +47,8 @@ export class LevelService {
             data: updateRequest
         })
         
+        IRT.clearCache()
+
         return toLevelResponse(level)
     }
 }
