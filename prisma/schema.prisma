@@ -43,6 +43,7 @@ model Level {
   id          Int        @id @default(autoincrement())
   level       Int
   description String?    @db.Text
+  a           Float
   questions   Question[]
 
   created_at DateTime @default(now())

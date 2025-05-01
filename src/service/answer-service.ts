@@ -107,4 +107,31 @@ export class AnswerService {
 
         return toAnswerResponse(answer)
     }
+
+    static async getRightAnswer(question_id: string): Promise<AnswerResponse> {
+        const answer = await prismaClient.answer.findFirst({
+            where: {
+                question_id: question_id,
+                is_correct: true
+            }
+        })
+
+        if (!answer) {
+            throw new ResponseErorr(404, AnswerNotFound)
+        }
+
+        return toAnswerResponse(answer)
+    }
+
+    static async getAllRandom(question_id: string): Promise<AnswerResponse[]> {
+        await QuestionService.get(question_id)
+    
+        const answers = await prismaClient.$queryRawUnsafe<AnswerResponse[]>(`
+            SELECT * FROM "answers" 
+            WHERE "question_id" = '${question_id}'
+            ORDER BY RANDOM()
+        `)
+    
+        return answers
+    }    
 }

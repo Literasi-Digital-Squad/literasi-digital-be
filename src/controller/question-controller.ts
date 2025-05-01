@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateQuestionRequest, UpdateQuestionRequest } from "../model/question-model";
+import { CreateQuestionRequest, GetNextQuestionRequest, UpdateQuestionRequest } from "../model/question-model";
 import { QuestionService } from "../service/question-service";
 import { InvalidID, Status } from "../lib/constant";
 import { MulterRequest } from "../types/multer-request";
@@ -100,6 +100,32 @@ export class QuestionController {
             await QuestionService.delete(id);
             res.status(200).json({
                 status: Status.Success,
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static async getInitialQuestion(req: Request, res: Response, next: NextFunction) {
+        try {
+            const response = await QuestionService.getInitialQuestion();
+            res.status(200).json({
+                status: Status.Success,
+                data: response
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static async getNextQuestion(req: Request, res: Response, next: NextFunction) {
+        try {
+            const request: GetNextQuestionRequest = req.body as GetNextQuestionRequest;
+
+            const response = await QuestionService.getNextQuestion(request);
+            res.status(200).json({
+                status: Status.Success,
+                data: response
             });
         } catch (e) {
             next(e);

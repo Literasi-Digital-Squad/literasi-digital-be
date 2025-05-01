@@ -2,6 +2,8 @@ import express from 'express'
 import { AdminController } from '../controller/admin-controller'
 import { ParticipantController } from '../controller/participant-controller'
 import { ResultController } from '../controller/result-controller'
+import { QuestionController } from '../controller/question-controller'
+import { AnswerController } from '../controller/answer-controller'
 
 export const publicRouter = express.Router()
 
@@ -17,3 +19,10 @@ publicRouter.get('/result/:id', ResultController.get)
 // Auth API
 publicRouter.post('/register', AdminController.register)
 publicRouter.post('/login', AdminController.login)
+
+// Question API
+publicRouter.post('/questions', QuestionController.getNextQuestion)
+publicRouter.get('/initial-question', QuestionController.getInitialQuestion)
+
+// Answer API
+publicRouter.get('/questions/:question_id/answers', AnswerController.getAllRandom)
