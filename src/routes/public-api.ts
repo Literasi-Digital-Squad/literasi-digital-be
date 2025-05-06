@@ -4,6 +4,7 @@ import { ParticipantController } from '../controller/participant-controller'
 import { ResultController } from '../controller/result-controller'
 import { QuestionController } from '../controller/question-controller'
 import { AnswerController } from '../controller/answer-controller'
+import { ResultQuestionController } from '../controller/result_question-controller'
 
 export const publicRouter = express.Router()
 
@@ -26,3 +27,6 @@ publicRouter.get('/initial-question', QuestionController.getInitialQuestion)
 
 // Answer API
 publicRouter.get('/questions/:question_id/answers', AnswerController.getAllRandom)
+
+// Result Question API
+publicRouter.post('/results/:result_id/submit', ResultQuestionController.create)
