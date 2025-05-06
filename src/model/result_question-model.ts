@@ -12,6 +12,16 @@ export type ResultQuestionResponse = {
     answers: ResultAnswerResponse[]
 }
 
+export type ResultQuestion = {
+    question_id: string
+    answer_id: number
+}
+
+export type ResultQuestionRequest = {
+    result_id: string
+    result_questions: ResultQuestion[]
+}
+
 export function toResultQuestionResponse(resultQuestion: QuestionWithAnswers): ResultQuestionResponse {
     return {
         id: resultQuestion.id,
