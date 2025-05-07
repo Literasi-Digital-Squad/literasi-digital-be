@@ -86,6 +86,7 @@ model Result {
   participant      Participant      @relation(fields: [participant_id], references: [id], onDelete: Cascade)
   level_result     Int
   description      String?          @db.Text
+  total_correct    Int
   result_questions ResultQuestion[]
 
   created_at DateTime @default(now())

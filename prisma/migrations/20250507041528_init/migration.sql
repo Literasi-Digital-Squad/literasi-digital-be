@@ -66,6 +66,7 @@ CREATE TABLE "results" (
     "participant_id" INTEGER NOT NULL,
     "level_result" INTEGER NOT NULL,
     "description" TEXT,
+    "total_correct" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 

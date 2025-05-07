@@ -11,6 +11,7 @@ export type ResultResponse = {
     participant_id: number;
     level_result: number;
     description?: string;
+    total_correct: number;
     created_at: string;
     updated_at: string;
     participant?: ParticipantBasic; // optional, hanya kalau include
@@ -31,6 +32,7 @@ export type ResultCreateRequest = {
     participant_id: number;
     level_result: number;
     description?: string;
+    total_correct: number;
 };
 
 export type ResultCompleteResponse = {
@@ -44,6 +46,7 @@ export function toResultResponse(result: Result & { participant?: Participant })
         participant_id: result.participant_id,
         level_result: result.level_result,
         description: result.description ?? undefined,
+        total_correct: result.total_correct,
         created_at: result.created_at.toISOString(),
         updated_at: result.updated_at.toISOString(),
         participant: result.participant 

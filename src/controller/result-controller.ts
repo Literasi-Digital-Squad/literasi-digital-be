@@ -38,7 +38,8 @@ export class ResultController {
             const request: ResultCreateRequest = {
                 participant_id: Number(req.body.participant_id),
                 level_result: Number(req.body.level_result),
-                description: req.body.description
+                description: req.body.description,
+                total_correct: req.body.total_correct
             };
             const response = await ResultService.create(request);
             res.status(201).json(response);
