@@ -4,7 +4,8 @@ export class ResultValidation {
     static readonly CREATE: ZodType = z.object({
         participant_id: z.number().int().positive(),
         level_result: z.number().int().min(0).max(100),
-        description: z.string().max(1000).optional()
+        description: z.string().max(1000).optional(),
+        total_correct: z.number().int().min(0).max(20),
     });
 
     static readonly LIST_QUERY: ZodType = z.object({
