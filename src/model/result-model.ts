@@ -4,6 +4,7 @@ export type ParticipantBasic = {
     id: number;
     name: string;
     email: string;
+    age: number;
 };
 
 export type ResultResponse = {
@@ -53,12 +54,12 @@ export function toResultResponse(result: Result & { participant?: Participant })
             ? {
                 id: result.participant.id,
                 name: result.participant.name,
-                email: result.participant.email
+                email: result.participant.email,
+                age: result.participant.age
             } 
             : undefined
     };
 }
-
 
 export function toResultListResponse(
     results: Result[],

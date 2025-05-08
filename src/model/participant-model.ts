@@ -4,7 +4,6 @@ export type ParticipantResponse = {
     id: number;
     name: string;
     age: number;
-    phone: string;
     email: string;
     created_at: string;
     updated_at: string;
@@ -24,14 +23,12 @@ export type ParticipantListResponse = {
 export type ParticipantCreateRequest = {
     name: string;
     age: number;
-    phone: string;
     email: string;
 };
 
 export type ParticipantUpdateRequest = {
     name?: string;
     age?: number;
-    phone?: string;
     email?: string;
 };
 
@@ -49,7 +46,6 @@ export function toParticipantResponse(participant: Participant): ParticipantResp
         id: participant.id,
         name: participant.name,
         age: participant.age,
-        phone: participant.phone,
         email: participant.email,
         created_at: participant.created_at.toISOString(),
         updated_at: participant.updated_at.toISOString()
@@ -102,7 +98,6 @@ export type ParticipantWithResultResponse = {
     id: number;
     name: string;
     age: number;
-    phone: string;
     email: string;
     created_at: string;
     updated_at: string;
@@ -135,7 +130,6 @@ export function toParticipantWithResultResponse(participant: Participant & { res
         id: participant.id,
         name: participant.name,
         age: participant.age,
-        phone: participant.phone,
         email: participant.email,
         created_at: participant.created_at.toISOString(),
         updated_at: participant.updated_at.toISOString(),
@@ -161,4 +155,3 @@ export function toParticipantWithResultListResponse(
         }
     };
 }
-
