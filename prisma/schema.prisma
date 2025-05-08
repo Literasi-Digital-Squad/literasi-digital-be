@@ -17,7 +17,6 @@ model Participant {
   id      Int      @id @default(autoincrement())
   name    String   @db.VarChar(50)
   age     Int
-  phone   String   @db.VarChar(100)
   email   String   @unique @db.VarChar(255)
   results Result[] @relation()
 
