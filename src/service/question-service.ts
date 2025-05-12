@@ -144,6 +144,8 @@ export class QuestionService {
             is_correct = true
             nextQuestionReq.correct_streak += 1
             nextQuestionReq.wrong_streak = 0
+
+            nextQuestionReq.total_correct += 1
         } else {
             nextQuestionReq.correct_streak = 0
             nextQuestionReq.wrong_streak += 1
@@ -158,10 +160,11 @@ export class QuestionService {
         }
 
         return {
-            ...toQuestionResponse(question[0]),
             theta: newTheta,
             wrong_streak: nextQuestionReq.wrong_streak,
-            correct_streak: nextQuestionReq.correct_streak
+            correct_streak: nextQuestionReq.correct_streak,
+            total_correct: nextQuestionReq.total_correct,
+            question: toQuestionResponse(question[0])
         }
     }
 

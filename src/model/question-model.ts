@@ -21,10 +21,12 @@ export type UpdateQuestionRequest = {
     image?: Express.Multer.File
 }
 
-export type NextQuestionResponse = QuestionResponse & {
+export type NextQuestionResponse = {
     theta: number
     wrong_streak: number
     correct_streak: number
+    total_correct: number
+    question: QuestionResponse
 };
 
 export type GetNextQuestionRequest = {
@@ -33,6 +35,7 @@ export type GetNextQuestionRequest = {
     theta: number
     wrong_streak: number
     correct_streak: number
+    total_correct: number;
 }
 
 export function toQuestionResponse(question: Question): QuestionResponse {
