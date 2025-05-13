@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -52,7 +52,7 @@ model Level {
 }
 
 model Question {
-  id        String   @id @default(uuid()) @db.Uuid
+  id        String   @id @default(uuid())
   level_id  Int
   level     Level    @relation(fields: [level_id], references: [id])
   body      String?  @db.Text
@@ -67,7 +67,7 @@ model Question {
 
 model Answer {
   id          Int      @id @default(autoincrement())
-  question_id String   @db.Uuid
+  question_id String
   question    Question @relation(fields: [question_id], references: [id], onDelete: Cascade)
   body        String?  @db.Text
   image_url   String?  @db.VarChar(255)
@@ -80,7 +80,7 @@ model Answer {
 }
 
 model Result {
-  id               String           @id @default(uuid()) @db.Uuid
+  id               String           @id @default(uuid())
   participant_id   Int
   participant      Participant      @relation(fields: [participant_id], references: [id], onDelete: Cascade)
   level_result     Int
@@ -96,7 +96,7 @@ model Result {
 
 model ResultQuestion {
   id             Int            @id @default(autoincrement())
-  result_id      String         @db.Uuid
+  result_id      String
   result         Result         @relation(fields: [result_id], references: [id], onDelete: Cascade)
   level_id       Int
   body           String?        @db.Text
