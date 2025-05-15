@@ -8,12 +8,20 @@ import { ResultController } from '../controller/result-controller'
 import multer from 'multer'
 import { AnswerController } from '../controller/answer-controller'
 import { ResultQuestionController } from '../controller/result_question-controller'
+import { DashboardController } from '../controller/dashboard-controller'
 
 export const apiRouter = express.Router()
 
 const upload = multer()
 
 apiRouter.use(authMiddleware)
+
+// Dasboard API
+apiRouter.get('/admin/dashboard/level_distribution', DashboardController.getLevelDistribution)
+apiRouter.get('/admin/dashboard/level_stats/:level_id', DashboardController.getLevelStats)
+apiRouter.get('/admin/dashboard/result_total/', DashboardController.getTotalResult)
+apiRouter.get('/admin/dashboard/participant_total/', DashboardController.getTotalParticipant)
+apiRouter.get('/admin/dashboard/participant_total_today/', DashboardController.getTotalParticipantToday)
 
 // Participant API
 apiRouter.get('/admin/participants', ParticipantController.getAll)

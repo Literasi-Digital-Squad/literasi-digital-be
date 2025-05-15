@@ -69,6 +69,8 @@ export class ResultService {
         return toResultCompleteResponse(result);
     }
 
+    
+
     static async create(req: ResultCreateRequest): Promise<ResultCompleteResponse> {
         const createRequest = Validation.validate(ResultValidation.CREATE, req);
 

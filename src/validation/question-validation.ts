@@ -20,6 +20,7 @@ export class QuestionValidation {
         question_id: z.string().uuid(),
         answer_id: z.number().min(1),
         wrong_streak: z.number().min(0),
-        correct_streak: z.number().min(0)
+        correct_streak: z.number().min(0),
+        total_correct: z.number().min(0).max(20)
     })
 }

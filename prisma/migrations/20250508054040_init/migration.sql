@@ -3,7 +3,6 @@ CREATE TABLE "participants" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(50) NOT NULL,
     "age" INTEGER NOT NULL,
-    "phone" VARCHAR(100) NOT NULL,
     "email" VARCHAR(255) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -66,6 +65,7 @@ CREATE TABLE "results" (
     "participant_id" INTEGER NOT NULL,
     "level_result" INTEGER NOT NULL,
     "description" TEXT,
+    "total_correct" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 

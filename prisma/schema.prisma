@@ -17,7 +17,6 @@ model Participant {
   id      Int      @id @default(autoincrement())
   name    String   @db.VarChar(50)
   age     Int
-  phone   String   @db.VarChar(100)
   email   String   @unique @db.VarChar(255)
   results Result[] @relation()
 
@@ -86,6 +85,7 @@ model Result {
   participant      Participant      @relation(fields: [participant_id], references: [id], onDelete: Cascade)
   level_result     Int
   description      String?          @db.Text
+  total_correct    Int
   result_questions ResultQuestion[]
 
   created_at DateTime @default(now())

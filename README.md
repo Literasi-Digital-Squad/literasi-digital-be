@@ -2,20 +2,20 @@
 
 ## 📌 About
 
-Lorem Ipsum
+This application is a self-assessment tool designed to measure users' digital literacy using the Item Response Theory (IRT) algorithm. By adapting questions based on individual ability levels, it provides more accurate and personalized assessment results.
 
 ## 🚀 **Features**
 
-**🔹Feature 1:**
+**🔹Assesment Digital Literation**
 
-- Create, read, update, and delete record.
+🔹**Admin Dashboard**
 
 ## 🔧Getting started
 
 **Clone**
 
 ```
-git clone https://github.com/tantowish/literasi-digital-be.git
+git clone https://github.com/Literasi-Digital-Squad/literasi-digital-be.git
 cd literasi-digital-be
 
 ```
@@ -61,12 +61,12 @@ npm run dev
 |       |-- app.ts      # Main server code
 |       |-- controller/ # Controller using service
 |       |-- error/      # Error handler logic
+|       |-- lib/      	# Helper module
 |       |-- middleware/ # Middleware
 |       |-- model/      # Model type for database
 |       |-- routes/     # Routes logic
 |       |-- service/    # Service Application logic
 |       |-- types/      # Extended type for model
-|       |-- util/       # Utilities helper
 |       |-- validation/ # Request validation
 |-- test/               # Testing folder
 ```
