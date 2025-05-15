@@ -61,7 +61,6 @@ export function toResultResponse(result: Result & { participant?: Participant })
     };
 }
 
-
 export function toResultListResponse(
     results: Result[],
     total_items?: number,
