@@ -126,12 +126,12 @@ export class AnswerService {
     static async getAllRandom(question_id: string): Promise<AnswerResponse[]> {
         await QuestionService.get(question_id)
     
-        const answers = await prismaClient.$queryRawUnsafe<AnswerResponse[]>(`
-            SELECT * FROM "answers" 
-            WHERE "question_id" = '${question_id}'
-            ORDER BY RANDOM()
-        `)
-    
+        const answers = await prismaClient.$queryRaw<AnswerResponse[]>`
+            SELECT * FROM \`answers\`
+            WHERE \`question_id\` = ${question_id}
+            ORDER BY RAND()
+            `;
+
         return answers
     }    
 }
