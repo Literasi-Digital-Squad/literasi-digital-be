@@ -124,7 +124,12 @@ export class QuestionService {
     }
 
     static async getInitialQuestion(): Promise<QuestionResponse> {
-        const question: Question[] = await prismaClient.$queryRaw`SELECT * FROM "questions" WHERE "level_id" = ${InitialQuestionLevel} ORDER BY RANDOM() LIMIT 1`;
+        const question: Question[] = await prismaClient.$queryRaw<Question[]>`
+            SELECT * FROM \`questions\`
+            WHERE \`level_id\` = ${InitialQuestionLevel}
+            ORDER BY RAND()
+            LIMIT 1
+            `;
         if (question.length == 0) {
             throw new ResponseErorr(404, QuestionNotFound);
         }
@@ -151,10 +156,15 @@ export class QuestionService {
             nextQuestionReq.wrong_streak += 1
         }
 
-        const nextLevel = await IRT.calculate(nextQuestionReq.theta)
         const newTheta = IRT.updateTheta(nextQuestionReq.theta, is_correct, nextQuestionReq.wrong_streak, nextQuestionReq.correct_streak)
+        const nextLevel = await IRT.calculate(newTheta)
 
-        const question: Question[] = await prismaClient.$queryRaw`SELECT * FROM "questions" WHERE "level_id" = ${nextLevel} ORDER BY RANDOM() LIMIT 1`;
+        const question: Question[] = await prismaClient.$queryRaw<Question[]>`
+            SELECT * FROM \`questions\`
+            WHERE \`level_id\` = ${nextLevel}
+            ORDER BY RAND()
+            LIMIT 1
+            `;
         if (question.length == 0) {
             throw new ResponseErorr(404, QuestionNotFound);
         }
