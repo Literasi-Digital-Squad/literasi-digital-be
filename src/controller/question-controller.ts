@@ -27,16 +27,18 @@ export class QuestionController {
 
     static async getAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const level = parseInt(req.query.level as string) || 1
-            const limit = parseInt(req.query.limit as string) || 10
-            const page = parseInt(req.query.page as string) || 1
-            const response = await QuestionService.getAll(level, limit, page);
-
-            const totalItems = await QuestionService.countQuestions(level);
+            const level = parseInt(req.query.level as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 10;
+            const page = parseInt(req.query.page as string) || 1;
+            const search = (req.query.search as string) || '';
+    
+            const response = await QuestionService.getAll(level, limit, page, search);
+    
+            const totalItems = await QuestionService.countQuestions(level, search);
             const totalPages = Math.ceil(totalItems / limit);
-
+    
             res.status(200).json({
-                status: Status.Success,
+                status: "success",
                 data: response,
                 pagination: {
                     total_items: totalItems,
@@ -48,7 +50,7 @@ export class QuestionController {
         } catch (e) {
             next(e);
         }
-    }
+    }    
 
     static async get(req: Request, res: Response, next: NextFunction) {
         try {

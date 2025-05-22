@@ -1,5 +1,4 @@
 import { prismaClient } from "../app/database";
-import { ResponseErorr } from "../error/reponse-error";
 import {
     GetLevelDistributionResponse,
     GetLevelStatsResponse,
@@ -8,7 +7,6 @@ import {
     toParticipantTotalResponse,
     ParticipantTotalResponse
 } from "../model/dashboard-model";
-import { ResultNotFound, ParticipantNotFound } from "../lib/constant";
 
 export class DashboardService {
     static async getLevelDistribution(): Promise<GetLevelDistributionResponse> {
@@ -76,40 +74,26 @@ export class DashboardService {
 
     static async getTotalResult(): Promise<ResultTotalResponse> {
         const result = await prismaClient.result.count();
-
-        if (!result) {
-            throw new ResponseErorr(404, ResultNotFound);
-        }
-
         return toResultTotalResponse(result);
     }
 
     static async getTotalParticipant(): Promise<ParticipantTotalResponse> {
         const total = await prismaClient.participant.count();
-
-        if (!total) {
-        throw new ResponseErorr(404, ParticipantNotFound);
-        }
-
         return toParticipantTotalResponse(total);
     }
 
     static async getTotalParticipantToday(): Promise<ParticipantTotalResponse> {
         const startOfDay = new Date();
         startOfDay.setHours(0, 0, 0, 0);
-
+    
         const total = await prismaClient.participant.count({
             where: {
                 created_at: {
-                gte: startOfDay,
+                    gte: startOfDay,
                 },
             },
         });
-
-        if (!total) {
-        throw new ResponseErorr(404, ParticipantNotFound);
-        }
-
-        return toParticipantTotalResponse(total);
+    
+        return toParticipantTotalResponse(total); // tetap return meskipun 0
     }
 }
