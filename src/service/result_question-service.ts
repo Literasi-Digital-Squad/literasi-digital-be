@@ -7,27 +7,40 @@ import { QuestionService } from "./question-service";
 import { ResultService } from "./result-service";
 
 export class ResultQuestionService {
-    static async getResultQuestionsDetail(result_id: string): Promise<ResultQuestionResponse[]> {
-        await ResultService.get(result_id)
-
+    static async getResultQuestionsDetail(
+        result_id: string,
+        limit: number = 10,
+        page: number = 1,
+        search?: string
+    ): Promise<ResultQuestionResponse[]> {
+        await ResultService.get(result_id);
+    
+        const whereClause: any = {
+            result_id: result_id
+        };
+    
+        if (search && search.trim() !== '') {
+            whereClause.body = {
+                contains: search,
+                mode: 'insensitive',
+                not: null
+            };
+        }
+    
         const resultQuestions = await prismaClient.resultQuestion.findMany({
-            where: {
-                result_id: result_id
-            }, 
-            orderBy: {
-                id: 'asc'
-            },
+            where: whereClause,
+            orderBy: { id: 'asc' },
             include: {
                 result_answers: {
-                    orderBy: {
-                        id: 'asc'
-                    }
+                    orderBy: { id: 'asc' }
                 }
-            }
-        })
-
-        return toResultQuestionListResponse(resultQuestions)
-    }
+            },
+            take: limit,
+            skip: (page - 1) * limit
+        });
+    
+        return toResultQuestionListResponse(resultQuestions);
+    }    
 
     static async create(req: ResultQuestionRequest): Promise<boolean> {
         const createReq = Validation.validate(ResultQuestionValidation.CREATE, req)
@@ -61,4 +74,20 @@ export class ResultQuestionService {
 
         return true
     }
+
+    // Helper Function
+
+    static async countResultQuestions(result_id: string, search?: string): Promise<number> {
+        const whereClause: any = { result_id };
+    
+        if (search && search.trim() !== '') {
+            whereClause.body = {
+                contains: search,
+                mode: 'insensitive'
+            };
+        }
+    
+        return prismaClient.resultQuestion.count({ where: whereClause });
+    }
+    
 }
