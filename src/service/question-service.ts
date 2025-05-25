@@ -33,21 +33,29 @@ export class QuestionService {
         return toQuestionResponse(question)
     }
 
-    static async getAll(level: number, limit: number, page: number): Promise<QuestionResponse[]> {
-        // check level exists
+    static async getAll(level: number, limit: number, page: number, search?: string): Promise<QuestionResponse[]> {
         await LevelService.get(level)
-
+    
+        const whereClause: any = {
+            level_id: level
+        };
+    
+        if (search && search.trim() !== '') {
+            whereClause.body = {
+                contains: search,
+                mode: 'insensitive'
+            }
+        }
+    
         const questions = await prismaClient.question.findMany({
             take: limit,
             skip: (page - 1) * limit,
             orderBy: { created_at: 'desc' },
-            where: {
-                level_id: level
-            }
+            where: whereClause
         });
     
         return toQuestionResponseArray(questions);
-    }
+    }    
 
     static async get(question_id: string): Promise<QuestionResponse> {
         const question = await prismaClient.question.findUnique({
@@ -181,9 +189,16 @@ export class QuestionService {
     
 
     // Helper function
-    static async countQuestions(level: number): Promise<number> {
-        return await prismaClient.question.count({
-            where: { level_id: level }
-        });
-    }
+    static async countQuestions(level: number, search?: string): Promise<number> {
+        const whereClause: any = { level_id: level };
+    
+        if (search && search.trim() !== '') {
+            whereClause.body = {
+                contains: search,
+                mode: 'insensitive'
+            };
+        }
+    
+        return await prismaClient.question.count({ where: whereClause });
+    }    
 }

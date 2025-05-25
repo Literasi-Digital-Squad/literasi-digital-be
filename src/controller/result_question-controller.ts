@@ -9,18 +9,33 @@ export class ResultQuestionController {
     static async getResultQuestionsDetail(req: Request, res: Response, next: NextFunction) {
         try {
             const result_id = req.params.result_id;
+    
             if (!validateUUID(result_id)) {
                 throw new ResponseErorr(400, InvalidID);
             }
-            const response = await ResultQuestionService.getResultQuestionsDetail(result_id);
+    
+            const limit = parseInt(req.query.limit as string) || 10;
+            const page = parseInt(req.query.page as string) || 1;
+            const search = req.query.search as string | undefined;
+    
+            const response = await ResultQuestionService.getResultQuestionsDetail(result_id, limit, page, search);
+            const totalItems = await ResultQuestionService.countResultQuestions(result_id, search);
+            const totalPages = Math.ceil(totalItems / limit);
+    
             res.status(200).json({
                 status: Status.Success,
-                data: response
+                data: response,
+                pagination: {
+                    total_items: totalItems,
+                    total_pages: totalPages,
+                    current_page: page,
+                    items_per_page: limit
+                }
             });
         } catch (error) {
             next(error);
         }
-    }
+    }    
 
     static async create(req: Request, res: Response, next: NextFunction) {
         try {
