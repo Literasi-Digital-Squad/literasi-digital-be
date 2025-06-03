@@ -34,26 +34,27 @@ export class QuestionService {
     }
 
     static async getAll(level: number, limit: number, page: number, search?: string): Promise<QuestionResponse[]> {
-        await LevelService.get(level)
-    
+        await LevelService.get(level);
+
         const whereClause: any = {
             level_id: level
         };
-    
+
         if (search && search.trim() !== '') {
             whereClause.body = {
                 contains: search,
-                mode: 'insensitive'
-            }
+                mode: 'insensitive',
+                not: null
+            };
         }
-    
+
         const questions = await prismaClient.question.findMany({
             take: limit,
             skip: (page - 1) * limit,
             orderBy: { created_at: 'desc' },
             where: whereClause
         });
-    
+
         return toQuestionResponseArray(questions);
     }    
 

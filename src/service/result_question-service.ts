@@ -22,7 +22,8 @@ export class ResultQuestionService {
         if (search && search.trim() !== '') {
             whereClause.body = {
                 contains: search,
-                mode: 'insensitive'
+                mode: 'insensitive',
+                not: null
             };
         }
     
