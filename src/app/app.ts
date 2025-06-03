@@ -4,14 +4,10 @@ import { Request, Response } from 'express'
 import { publicRouter } from '../routes/public-api'
 import { errorMiddleware } from '../middleware/error-middleware'
 import { apiRouter } from '../routes/api'
-import { AllowedCorsHeaders, AllowedCorsMethods, APIPrefix, ENV, NotAllowedCorsErr, Server, ServerHost } from '../lib/constant'
+import { AllowedCorsHeaders, AllowedCorsMethods, APIPrefix, ENV, NotAllowedCorsErr, Server } from '../lib/constant'
 
 export const app = express()
 const port = Number(process.env.PORT) || Server.PORT
-let host = process.env.HOST
-if (!host) {
-    host = process.env.ENV === ENV.DEVELOPMENT ? ServerHost.Development : ServerHost.Production
-}
 
 const isDev = process.env.ENV === ENV.DEVELOPMENT
 const allowedOrigins = process.env.ORIGINS?.split(',') || []
@@ -46,6 +42,6 @@ app.use(APIPrefix.V1, apiRouter)
 // Error middleware
 app.use(errorMiddleware)
 
-app.listen(port, host, () => {
-    console.log(Server.StartMsg(host, port))
+app.listen(port, () => {
+    console.log(Server.StartMsg(port))
 })
