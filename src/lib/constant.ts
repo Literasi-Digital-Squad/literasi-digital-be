@@ -4,14 +4,19 @@ import { Prisma } from "@prisma/client";
 export const Server = {
     PORT: 3000,
     RunningMsg: "server is running",
-    StartMsg: (port: string | number) =>
-        `Server is listening on http://localhost:${port}`,
+    StartMsg: (host: string, port: number) =>
+        `Server is listening on http://${host}:${port}`,
 };
 export const ENV = {
     DEVELOPMENT: "development",
     STAGING: "staging",
     PRODUCTION: "production"
 }
+export const ServerHost = {
+    Development: "127.0.0.1",
+    Production: "0.0.0.0"
+}
+
 export const NotAllowedCorsErr = new Error('Not allowed by CORS')
 export const AllowedCorsMethods = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 export const AllowedCorsHeaders = ['Content-Type', 'Authorization']
