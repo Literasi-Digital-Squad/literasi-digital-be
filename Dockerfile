@@ -1,34 +1,19 @@
-# Use the official Node.js image as a base image
+# Base image
 FROM node:20.11.1-alpine AS base
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Add package file and install dependencies
-COPY package.json ./
-RUN yarn install --verbose
-
-# Generate prisma client
-COPY prisma ./prisma/
-RUN yarn prisma generate
-
-# Copy source files and build the application with verbose output
-COPY src ./src
+# Copy files
+COPY package*.json ./
 COPY tsconfig.json ./
-RUN yarn build
+COPY . .
 
-# Start a new stage from the base image
-FROM node:20.11.1-alpine
+# Install deps
+RUN npm install -g pm2 && npm install
 
-# Set the working directory
-WORKDIR /app
+# Build TypeScript
+RUN npm run build
 
-# Copy node_modules and build directory from the previous stage
-COPY --from=base /app/node_modules ./node_modules
-COPY --from=base /app/dist ./dist
-
-# Expose the port the app runs on
-EXPOSE 3000
-
-# Start the application
-CMD ["node", "dist/src/app/app.js"]
+# Start with PM2
+CMD ["pm2-runtime", "dist/src/app/app.js"]
