@@ -5,7 +5,7 @@ export const Server = {
     PORT: 3000,
     RunningMsg: "server is running",
     StartMsg: (host: string, port: number) =>
-        `Server is listening on http://${host}:${port}`,
+        `Server is listening on ${host}:${port}`,
 };
 export const ENV = {
     DEVELOPMENT: "development",
