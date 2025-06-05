@@ -35,6 +35,7 @@ export class ResultService {
         const [totalResults, results] = await Promise.all([
             prismaClient.result.count({ where: whereCondition }),
             prismaClient.result.findMany({
+                orderBy: { created_at: 'desc' },
                 where: whereCondition,
                 skip,
                 take: itemsPerPage,
